@@ -21,4 +21,5 @@ urlpatterns = [
     path('blcus/<int:usid>/<int:deist>/', views.blcus, name='blcus'),
     path('chpass/<int:idus>/', views.chpass, name='chpass'),
     path('chdata/<int:idus>/', views.chdata, name='chdata'),
+    path('stat/', views.stat, name='stat'),
 ]

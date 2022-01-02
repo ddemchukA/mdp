@@ -80,6 +80,13 @@ def checkin(p1,p2,us,ev,com,id):
         str=str1
     return str
 
+@login_required
+def stat(request):
+    if not  request.user.user_profile.is_superman:
+        return HttpResponse('Доступ только для АДМИНИСТРАТОРОВ!')
+    arg={}
+    return render(request, 'templadm/stat.html',arg)
+
 
 @login_required
 def chdata(request,idus):
