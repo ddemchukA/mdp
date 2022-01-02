@@ -1,0 +1,33 @@
+{% extends "templadm/wrapper_h.html" %}
+{% block content %}
+<center>
+  {% if count > 0%}
+  <h1>Текущие эвакуации</h1>
+  <table border="1">
+  <tr><td>Состояние</td><td>Номер эвакуации</td><td>Начало эвакуации</td>
+    <td>ФИО пациента</td><td>Врач</td><td>Эвакуация из</td>
+  <td>Время эвакуации (часы)</td>
+  </tr>
+   {% for i in evd %}
+   {% if i.htime >= 3 and i.htime <= 5 %}
+    <tr bgcolor="yellow">
+    {% elif i.htime > 5%}
+     <tr bgcolor="red">
+       {% else %}
+      <tr>
+     {% endif %}
+      <td>{{i.sost}}</td>
+      <td><center><a href="/adminmodule/about/{{i.pk}}/">{{i.pk}}</a></center></td>
+      <td>{{i.vzyat}}</td>
+      <td>{{i.id_pac}}</td>
+      <td><p title="{{i.telef}}">{{i.vrf}}</p></td>
+      <td>{{i.fromlpu}}</td>
+      <td><center>{{i.htime}}</center></td></tr>
+
+   {% endfor %}
+  </table><br>
+  {% else %}
+  <h1>Активных эвакуаций нет</h1>
+  {% endif %}
+</center>
+{% endblock %}

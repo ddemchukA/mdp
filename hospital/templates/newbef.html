@@ -1,0 +1,98 @@
+{% extends "wrapper_h.html" %}
+{% block javascript %}
+<script>
+  function fun1(antog,groupid,potomki){
+    var st1=antog.toString();
+    var st=st1.split(',');
+    var stt=potomki.toString();
+    var ste=stt.split(',');
+	 if (document.getElementById(groupid).checked == true) {
+     for (var i = 0; i < st.length; i++) {
+       if (st[i]!='0'){
+      document.getElementById(st[i]).disabled=true;
+    }
+     }
+     for (var i = 0; i < ste.length; i++){
+       if (ste[i]!='0'){
+       document.getElementById(ste[i]).disabled=false;
+     }
+     }
+  }
+	else {
+    for (var i = 0; i < st.length; i++) {
+      if (st[i]!=0){
+     document.getElementById(st[i]).disabled=false;
+   }
+    }
+    for (var i = 0; i < ste.length; i++){
+      if (ste[i]!='0'){
+      if (document.getElementById(ste[i]).type == 'checked') {
+        document.getElementById(ste[i]).checked=false;
+      } else {
+        document.getElementById(ste[i]).value='';
+        document.getElementById(ste[i]).checked=false;
+      }
+      document.getElementById(ste[i]).disabled=true;
+    }
+    }
+}
+
+}
+ </script>
+{% endblock %}
+{% block content %}
+ <h1 align="center">Добавьте состояние пациента для кейса №{{case_id}}</h1>
+ <center>
+ <form name="formbef" action="" method="post">
+   {% csrf_token %}
+   {% for a in atr %}
+    {% if a.root == 1 %}
+    <strong>{{a.nazv}}:</strong><br>
+    {% for m in atr %}
+     {% if m.roditel == a.pk %}
+       {% if m.valtype == 1 %}
+       -<input type="checkbox" id="{{m.pk}}" name="{{m.pk}}:{{m.valtype}}" onchange="fun1('{{m.antogon}}','{{m.pk}}','{{m.potomki}}')">{{m.nazv}}
+       {% if m.ispotomok == 1 %}
+       :<br>
+        {% for t in atr %}
+          {% if t.roditel == m.pk %}
+          {% if t.valtype == 1 %}
+          -<input type="checkbox" id="{{t.pk}}" name="{{t.pk}}:{{t.valtype}}" {{t.umolch}} onchange="fun1('{{t.antogon}}','{{t.pk}}','{{t.potomki}}')">{{t.nazv}}<br>
+          {% elif t.valtype == 2 %}
+          {% if t.pk == 31 %}
+          -{{t.nazv}} <input type="number" id="{{t.pk}}" name="{{t.pk}}:{{t.valtype}}" step="0.1" {{t.umolch}}><a href="/komglas" target="_blank"> Калькулятор</a><br>
+           {% else %}
+           -{{t.nazv}} <input type="number" id="{{t.pk}}" name="{{t.pk}}:{{t.valtype}}" step="0.1" {{t.umolch}}><br><br>
+           {% endif %}
+          {% elif t.valtype == 3 %}
+          -{{t.nazv}} <textarea rows="5" cols="35" id="{{t.pk}}" name="{{t.pk}}:{{t.valtype}}" {{t.umolch}}></textarea><br>
+         {% endif %}
+         {% elif m.valtype == 4 %}
+         -{{m.nazv}} <input type="text"  id="{{t.pk}}" name="{{t.pk}}:{{m.valtype}}"><br>
+          {% endif %}
+        {% endfor %}
+       {% else %}
+       <br>
+       {% endif %}
+       {% elif m.valtype == 2 %}
+       {% if m.pk == 31 %}
+       -{{m.nazv}} <input type="number" id="{{m.pk}}" name="{{m.pk}}:{{m.valtype}}" step="0.1" {{m.umolch}}> <a href="/komglas" target="_blank"> Калькулятор</a><br>
+        {% else %}
+        -{{m.nazv}} <input type="number" id="{{m.pk}}" name="{{m.pk}}:{{m.valtype}}" step="0.1" {{m.umolch}}><br><br>
+        {% endif %}
+       {% elif m.valtype == 3 %}
+       -{{m.nazv}} <textarea rows="5" cols="35" id="{{m.pk}}" name="{{m.pk}}:{{m.valtype}}"></textarea><br>
+      {% elif m.valtype == 4 %}
+      -{{m.nazv}} <input type="text"  id="{{m.pk}}" name="{{m.pk}}:{{m.valtype}}"><br>
+     {% endif %}
+     {% endif %}
+   {% endfor %}
+   {% endif %}
+   {% endfor %}
+   <br>
+<button type="submit" name="button">Добавить</button><br>
+ </form>
+
+ </center>
+
+{% endblock %}

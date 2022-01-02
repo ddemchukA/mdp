@@ -1,0 +1,28 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<H1 align="center">Ввод исходных данных</h1></br>
+  <div class="formvv">
+  <form action="" method="post">
+     {% csrf_token %}
+     <h3 align="center">Введите возраст: {{form.vozrast}}</h3>
+     <h3 align="center">Введите пол (0-Ж, 1-М): {{form.pol}}</h3>
+     <h3 align="center">Есть гипертония: {{form.gip}}</h3>
+     <h3 align="center">Есть болезнь сердца: {{form.heart}}</h3>
+     <h3 align="center">Семейный(ая): {{form.sem}}</h3>
+     <h3 align="center">Тип работы (0 ребенок, 1 бюджетник, 2 безработный, 3 фирма, 4 частный предприниматель: {{form.work}}</h3>
+     <h3 align="center">Городской(ая) : {{form.pro}}</h3>
+     <h3 align="center">Уровень сахара (через точку,норма обычно 4.9-5.5): {{form.sax}}</h3>
+     <h3 align="center">Отношение к курению (0-Ранее курил, 1-Курит, 2-Никогда не курил, 3-Неизвестно): {{form.kuru}}</h3>
+     <h3 align="center">Рост (целое): {{form.rost}}</h3>
+     <h3 align="center">Вес (целое): {{form.ves}}</h3>
+     <h3 align="center">Инсульт был/не был (1/0): {{form.rezult}}</h3>
+     <h3 align="center"><input align="center" type="submit" value="Сохранить для тренировочного набора" /></h3>
+ </form>
+ <H4 align="center">Ваш IP: {{ip}}</h4></br>
+ </div>
+ {% else %}
+ <h1 align="center">Только авторизованным пользователям!</h1></br>
+ <a href="/accounts/login/"><h3 align="center">Авторизоваться</h3></a>
+{% endif %}
+{% endblock %}

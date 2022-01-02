@@ -1,0 +1,23 @@
+{% block content %}
+<H1 align="center">Итоговая форма эвакуации</h1>
+<h3 align="center">Звакуация № {{poi.id}}</h3>
+<hr>
+<center>
+<h3 align="center">Общие данные</h3>
+<table border="1">
+  <tr><td>Пациент: {{poi.id_pac.f}} {{poi.id_pac.i}} {{poi.id_pac.o}}</td><td>Время выезда: {{poi.vzyat}}</td></tr>
+  <tr><td>Диагноз эвакуирующего: {{poi.dscons}}</td><td>Эвакуация из: {{poi.fromlpu}}</td></tr>
+  <tr><td>Эвакуирующий врач: {{poi.id_vrach.last_name}}</td><td>Средний медперсонал: {{poi.id_srmp}}</td></tr>
+</table>
+<hr>
+<h3 align="center">Состояние перед эвакуацией</h3>
+<table border="1">
+  <tr><td>Общие параметры: </td></tr>
+  <tr><td>
+    {% for i in bef %}
+     
+    {% endfor %}
+</table>
+
+</center>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+<br>
+<h1 align="center">Добаление эвакуации</h1><br>
+<h3 align="center">Пациент: {{pac.f}} {{pac.i}} {{pac.o}}</h3><br>
+<h3 align="center">СНИЛС: {{pac.snils}}</h3><br>
+<h3 align="center">Телефон родственника: {{pac.telrod}}</h3><br>
+<h4 align="center">Эвакуирующий врач: {{request.user.last_name}}</h4><br>
+<br>
+<center>
+<form class="form1" action="" method="post">
+  {% csrf_token %}
+  {{ form.as_p}}
+  <button type="submit" name="button">Добавить</button>
+</form>
+</center>
+{% endblock %}

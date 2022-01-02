@@ -1,0 +1,260 @@
+{% extends "wrapper_h.html" %}
+{% block javascript %}
+<script>
+function openVklad(evt, bname) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(bname).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+{% endblock %}
+{% block content %}
+ <h1 align="center"> Текущая эвакуация</h1><br>
+ <center>
+ <table border="1">
+   <tr>
+     <td><strong>Параметр</strong></td>
+     <td><strong>Значение</strong></td>
+   </tr>
+   <tr>
+     <td>Номер эвакуации</td>
+     <td>{{poi.pk}}</td>
+   </tr>
+   <tr>
+     <td>Врач</td>
+     <td>{{poi.id_vrach.last_name}}</td>
+   </tr>
+   <tr>
+     <td>Пациент</td>
+     <td>{{poi.id_pac.f}} {{poi.id_pac.i}} {{poi.id_pac.o}}</td>
+   </tr>
+   <tr>
+     <td>СНИЛС</td>
+     <td>{{poi.id_pac.snils}}</td>
+   </tr>
+   <tr>
+     <td>Телефон родственника</td>
+     <td>{{poi.id_pac.telrod}}</td>
+   </tr>
+   <tr>
+     <td>Эвакуация из</td>
+     <td>{{poi.fromlpu}}</td>
+   </tr>
+   <tr>
+     <td>Средний медперсонал</td>
+     <td>{{poi.id_srmp}}</td>
+   </tr>
+   <tr>
+     <td>Предварительный диагноз эвакуирующего</td>
+     <td>{{poi.dscons}}</td>
+   </tr>
+   <tr>
+     <td>Дата и время выезда</td>
+     {% if poi.vzyat is not None %}
+     <td>{{poi.vzyat}}</td>
+     {% else %}
+     <td>не выехал</td>
+     {% endif %}
+   </tr>
+   <tr>
+     <td>Состояние</td>
+     {% if poi.vputi == -1 %}
+     <td>Новая эвакуация</td>
+     {% endif %}
+     {% if poi.vputi == 0 %}
+     <td>Готов к выезду</td>
+     {% endif %}
+     {% if poi.vputi == 1 %}
+     <td>Выезд начат</td>
+     {% endif %}
+     {% if poi.vputi == 2 %}
+     <td>Выезд идет. Есть срез состояния в пути</td>
+     {% endif %}
+     {% if poi.vputi == 3 %}
+     <td>Оформлено состояние после эвакуации</td>
+     {% endif %}
+     {% if poi.vputi == 4 %}
+     <td>Оформлена доставка в ЛПУ</td>
+     {% endif %}
+     {% if poi.vputi == 5 %}
+     <td>Больной принят в ЛПУ эвакуация закрыта</td>
+     {% endif %}
+     {% if poi.vputi == 6 %}
+     <td>Летальный исход в пути</td>
+     {% endif %}
+   </tr>
+ </table><br>
+ {% if poi.vputi > 0 and poi.vputi < 3 %}
+  <a href="/deadvputi/{{poi.pk}}/{{poi.id_pac_id}}/">Летальный исход в пути</a><br>
+ {% endif %}
+ {% if poi.vputi == -1 %}
+ <a href="/delcase/{{poi.pk}}">Удалить эвакуацию</a><br>
+ {% endif %}
+ {% if poi.vputi == 0 %}
+ <a href="/begin/{{poi.pk}}">Начать выезд</a>
+ {% endif %}
+ </center>
+{% endblock %}
+
+{% block tabsheet %}
+<br>
+<center>
+<div class="tab">
+ <button class="tablinks" onclick="openVklad(event, 'before')"  id="defa">Состояние до эвакуации</button>
+ <button class="tablinks" onclick="openVklad(event, 'intime')">Состояние во время эвакуации</button>
+ <button class="tablinks" onclick="openVklad(event, 'after')">Состояние после эвакуации</button>
+ <button class="tablinks" onclick="openVklad(event, 'dostav')">Оформить доставку</button>
+
+</div>
+<!-- Tab content -->
+<div id="before" class="tabcontent">
+  {% if poi.vputi == -1 %}
+   <h3 align="center">Нет данных о состоянии до эвакуации <a href="/new_bef/{{poi.id}}">добавить</a></h3>
+  {% elif poi.vputi > -1 %}
+   <h3 align="center">Данные о состоянии пациента до эвакуации</h3>
+   {% if poi.vputi == 0 %}
+    <a href="/delbef/{{poi.pk}}">Удалить</a><br><br>
+   {% endif %}
+   {% for a in bef %}
+    {% if a.valtype == 1 %}
+    -{{a.atrib}}<br>
+    {% endif %}
+    {% if a.valtype == 2 %}
+    -{{a.atrib}} : {{a.val_float}}<br>
+    {% endif %}
+    {% if a.valtype == 3 %}
+    -{{a.atrib}} : {{a.val_text}}<br>
+    {% endif %}
+    {% if a.valtype == 4 %}
+    -{{a.atrib}} : {{a.val_text}}<br>
+    {% endif %}
+   {% endfor %}
+  {% endif %}
+</div>
+
+<div id="intime" class="tabcontent">
+  <center>
+  {% if poi.vputi < 1 %}
+  <h3>В данном состоянии эвакуации невозможно добавление данных</h3>
+  {% else %}
+  <h3>Данные о состоянии в пути</h3>
+  {% for l in inti %}
+  <table border="1">
+    <tr><td><center><strong>Время среза: {{l.time}}</strong></center></td></tr>
+    <tr><td>
+   {% for pl in qps %}
+    {% if pl.intimetime_id == l.pk %}
+     {% if pl.valtype == 1 %}
+      {{pl.atrib}}<br>
+     {% elif pl.valtype == 2 %}
+      {{pl.atrib}} : {{pl.val_float}}<br>
+     {% elif pl.valtype == 3 %}
+      {{pl.atrib}} : {{pl.val_text}}<br>
+      {% elif pl.valtype == 4 %}
+       {{pl.atrib}} : {{pl.val_text}}<br>
+     {% endif %}
+    {% endif %}
+   {% endfor %}
+   </td></tr>
+   {% if poi.vputi == 2 %}
+   <tr><td><center><a href="/delint/{{l.id}}/{{poi.pk}}">Удалить</a></center></td></tr>
+   {% endif %}
+   </table><br>
+  {% endfor %}
+  {% if poi.vputi == 1 or poi.vputi == 2 %}
+   <a href=/newint/{{poi.id}}>Добавить данные о состоянии</a>
+  {% endif %}
+  {% endif %}
+  </center>
+</div>
+
+<div id="after" class="tabcontent">
+  {% if poi.vputi < 2 %}
+   <h3>Невозможно добавить состояние после эвакуации. Нет данных о предыдущих процессах.</h3>
+  {% else %}
+  <h3>Состояние после доставки</h3>
+  {% for aftu in aft %}
+  {% if aftu.valtype == 1 %}
+   {{aftu.atrib}}<br>
+  {% elif aftu.valtype == 2 %}
+   {{aftu.atrib}} : {{aftu.val_float}}<br>
+  {% elif aftu.valtype == 3 %}
+   {{aftu.atrib}} : {{aftu.val_text}}<br>
+   {% elif aftu.valtype == 4 %}
+    {{aftu.atrib}} : {{aftu.val_text}}<br>
+  {% endif %}
+  {% endfor %}
+  {% if poi.vputi == 3 %}
+    <a href="/delaft/{{poi.id}}">Удалить</a><br>
+  {% endif %}
+  {% if poi.vputi == 2 %}
+    <a href="/newaft/{{poi.id}}">Добавить</a>
+  {% endif %}
+  {% endif %}
+
+</div>
+
+<div id="dostav" class="tabcontent">
+  {% if vputi < 3 %}
+  <h3>Для добавления доставки не хватает данных</h3>
+  {% else %}
+   <h3>Оформление доставки</h3>
+   <table border="1">
+    <tr><td>Время события</td><td>Событие</td><td>ЛПУ</td><td>Добавлено</td><td>Примечание</td><td>Удаление</td></tr>
+   {% for tk in dostk %}
+       <tr>
+         <td>
+           {{tk.timedeist}}
+        </td>
+        <td>
+          {% if tk.whatis == 0%}
+           Доставлен в ЛПУ
+          {% elif tk.whatis == 1 %}
+          Принят в ЛПУ
+          {% endif %}
+       </td>
+       <td>
+         {{tk.lpu}}
+      </td>
+      <td>
+        {{tk.us.last_name}}
+     </td>
+     <td>
+       {{tk.primech}}
+    </td>
+    <td>
+      {% if poi.vputi != 3 and request.user.user_profile.is_list_doctor %}
+       <a href="/deldost/{{tk.pk}}/{{poi.pk}}">Удалить</a>
+      {% else %}
+       Невозможно
+      {% endif %}
+   </td>
+      </tr>
+   {% endfor %}
+   </table>
+   {% if poi.vputi == 3 %}
+    <a href="/newdost/{{poi.id}}">Оформить доставку в ЛПУ</a>
+  {% endif %}
+  {% endif %}
+</div>
+
+<script>
+document.getElementById("defa").click();
+</script>
+</center>
+{% endblock %}

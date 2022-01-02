@@ -1,0 +1,94 @@
+{% extends "wrapper_h.html" %}
+{% block javascript %}
+<script>
+  function komi(){
+    var obs=0;
+    var sos='';
+    var p = document.getElementById('id1');
+    var inp = document.getElementsByName('1group');
+    for (var i = 0; i < inp.length; i++) {
+        if (inp[i].type == "radio" && inp[i].checked) {
+            obs=obs+inp.length-i;
+        }
+    }
+    var inp = document.getElementsByName('2group');
+    for (var i = 0; i < inp.length; i++) {
+        if (inp[i].type == "radio" && inp[i].checked) {
+            obs=obs+inp.length-i;
+        }
+    }
+    var inp = document.getElementsByName('3group');
+    for (var i = 0; i < inp.length; i++) {
+        if (inp[i].type == "radio" && inp[i].checked) {
+            obs=obs+inp.length-i;
+        }
+    }
+    if (obs==15){
+      sos='ясное сознание';
+    }
+    if (obs>=13 && obs<=14){
+      sos='умеренное оглушение';
+    }
+
+    if (obs>=11 && obs<=12){
+      sos='глубокое оглушение';
+    }
+
+    if (obs>=9 && obs<=10){
+      sos='СОПР';
+    }
+
+    if (obs>=7 && obs<=8){
+      sos='умеренная кома';
+    }
+
+    if (obs>=5 && obs<=6){
+      sos='глубокая кома';
+    }
+
+    if (obs>=3 && obs<=4){
+      sos='запредельная кома';
+    }
+
+    p.innerHTML = 'Количество балов: '+obs.toString()+' уровень сознания: '+sos;
+}
+ </script>
+{% endblock %}
+{% block content %}
+<style>
+   .colortext {
+    color: red;
+   }
+  </style>
+<center>
+<div>
+<h3>Глаза:</h3></br>
+<input type="radio" name="1group">Произвольное</br>
+<input type="radio" name="1group">реакция на голос</br>
+<input type="radio" name="1group">реакция на боль</br>
+<input type="radio" name="1group">отсутствует</br>
+</div>
+
+<div>
+<h3>Речевая реакция:</h3></br>
+<input type="radio" name="2group">больной ориентирован, быстрый и правильный ответ на заданный вопрос</br>
+<input type="radio" name="2group">больной дезориентирован, спутанная речь</br>
+<input type="radio" name="2group">словесная окрошка, ответ по смыслу не соответствует вопросу</br>
+<input type="radio" name="2group">нечленораздельные звуки в ответ на заданный вопрос</br>
+<input type="radio" name="2group">отсутствие речи</br>
+</div>
+
+<div>
+<h3>Двигательная реакция:</h3></br>
+<input type="radio" name="3group">выполнение движений по команде</br>
+<input type="radio" name="3group">целенаправленное движение в ответ на болевое раздражение (отталкивание)</br>
+<input type="radio" name="3group">отдёргивание конечности в ответ на болевое раздражение</br>
+<input type="radio" name="3group">патологическое сгибание в ответ на болевое раздражение</br>
+<input type="radio" name="3group">патологическое разгибание в ответ на болевое раздражение </br>
+<input type="radio" name="3group">отсутствие движений</br>
+</div>
+<button type="submit" id="submit" onclick="komi();">Посчитать</button>
+
+<p class="colortext" id="id1"><font color="red"></font></p>
+</center>
+{% endblock %}

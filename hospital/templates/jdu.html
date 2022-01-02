@@ -1,0 +1,76 @@
+{% if inti_is == "-1" %}
+<h3 alisgn="center">Невозможно добавить данные о состоянии пациента, так как нет данных о состоянии до эвакуации</h3>
+ {% elif inti_is == "0" %}
+ <h3 alisgn="center">Нет данных об состояниях</h3>
+ {% if poi.vputi == 1 %}
+ {% if aft_k == 0 %}
+ <a href="/newletal/{{poi.id}}">Оформить летальный исход в пути</a><br><br>
+ {% endif %}
+  <a href=/newint/{{poi.id}}>Добавить данные о состоянии</a>
+ {% elif poi.vputi == 0 %}
+ <h3 alisgn="center">Добавление невозможно: Эвакуация еще не началась</h3>
+ {% endif %}
+{% endif %}
+{% if inti_is == "1" %}
+{% if poi.vputi != 0 %}
+ <h3 alisgn="center">Данные о состояниях в пути:</h3>
+ <center>
+   {% for l in inti %}
+   <table border="1">
+     <tr><td><center><strong>Время среза: {{l.time}}</strong></center></td></tr>
+     <tr><td>
+    {% for pl in qps %}
+     {% if pl.intimetime_id == l.pk %}
+      {% if pl.valtype == 1 %}
+       {{pl.atrib}}<br>
+      {% elif pl.valtype == 2 %}
+       {{pl.atrib}} : {{pl.val_float}}<br>
+      {% elif pl.valtype == 3 %}
+       {{pl.atrib}} : {{pl.val_text}}<br>
+      {% endif %}
+     {% endif %}
+    {% endfor %}
+    </td></tr>
+    {% if aft_k == 0 %}
+    <tr><td><center><a href="/delint/{{l.id}}">Удалить</a></center></td></tr>
+    {% endif %}
+    </table><br>
+   {% endfor %}
+ </center>
+ {% if aft_k == 0 %}
+ <a href="/newint/{{poi.id}}">Добавить данные о состоянии</a>
+ {% endif %}
+{% endif %}
+{% endif %}
+
+
+{% if inti_is == "0" %}
+ <h3>Невозможно добавить состояние после эвакуации: нет данных о состояниях в пути!</h3>
+{% if aft_k != 0 and poi.vputi != 0 and inti_is != "0" %}
+ <h3>Состояние пациента после эвакуации:</h3>
+  {% for aftu in aft %}
+  {% if aftu.valtype == 1 %}
+   {{aftu.atrib}}<br>
+  {% elif aftu.valtype == 2 %}
+   {{aftu.atrib}} : {{aftu.val_float}}<br>
+  {% elif aftu.valtype == 3 %}
+   {{aftu.atrib}} : {{aftu.val_text}}<br>
+  {% endif %}
+  {% endfor %}
+  {% if dostk_c == 0 and request.user.user_profile.is_list_doctor %}
+    <a href="/delaft/{{poi.id}}">Удалить</a>
+  {% endif %}
+{% endif %}
+{% if aft_k == 0 and poi.vputi != 0 and inti_is != "0" %}
+  <h3>Состояние пациента после эвакуации:</h3>
+  <a href="/newaft/{{poi.id}}">Добавить</a>
+{% endif %}
+
+<h3>Оформление доставки</h3>
+{% if dostk_c == 0 and inti_is != 0 and aft_k != 0 and request.user.user_profile.is_list_doctor %}
+
+{% elif dostk_c != 0 and inti_is != 0 %}
+<table border="1">
+ <tr><td>Время события</td><td>Событие</td><td>ЛПУ</td><td>Добавлено</td><td>Примечание</td><td>Удаление</td></tr>
+
+{% endif %}

@@ -1,0 +1,29 @@
+{% extends "templadm/wrapper_h.html" %}
+{% block content %}
+<center> <h1>Смена фамилии для пользователя: {{lp.username}} ({{lp.last_name}})</h1></center>
+<center>
+  <form class="form1" action="" method="post">
+    {% csrf_token %}
+    Фамилия: <input type="text" name="familia" value="{{lp.last_name}}"><br><br>
+    Телефон: <input type="text" name="telefon" value="{{lp.first_name}}"><br><br>
+    {% if fl != 0 %}
+     <h3 style="color:red">Изменение остальных данных невозможно: пользователь имел активность!</h3>
+    {% else %}
+     Текущее ЛПУ пользователя: {{lp.user_profile.lpu.name}}<br><br>
+     Изменить ЛПУ:<br><br>
+     <p><select size="3" name="tipvr">
+     {%for i in splpu%}
+        <option {% if i.pk == lp.user_profile.lpu_id %} selected {% endif %} value="{{i.pk}}">{{i.name}}</option>
+     {% endfor %}
+     </select></p>
+     Изменить тип профиля:<br>
+     <input type="checkbox" name="evac" {% if lp.user_profile.is_list_doctor == True %} checked {% endif %}> Эвакуирующий врач<br>
+     <input type="checkbox" name="commit" {% if lp.user_profile.is_commit_doctor == True %} checked {% endif %}> Принимающий врач<br>
+    {% endif %}
+    <br>
+    <br>
+    <button type="submit" name="button">Сохранить</button>
+  </form><br>
+  </center>
+</center>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "templadm/wrapper_h.html" %}
+{% block content %}
+<center> <h1>Список ЛПУ эвакуации</h1></center>
+<center>
+ <table border="1">
+   <tr><td>Название ЛПУ</td><td>Действия</td></tr>
+  {% for i in froml %}
+   <tr><td>{{i.name}}</td><td><a href="/adminmodule/editlpbd/{{i.pk}}">Редактировать</a></td></tr>
+  {% endfor %}
+ </table><br>
+ <a href="/adminmodule/newlpbd/">Новое ЛПУ</a>
+</center>
+{% endblock %}

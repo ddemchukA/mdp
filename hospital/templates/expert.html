@@ -1,0 +1,21 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+<H1 align="center">Ввод исходных данных</h1></br>
+  <div class="formvv">
+  <form id="otpd" action="" method="post">
+     {% csrf_token %}
+     <h3 align="center">Введите Ваш возраст: {{form.vozrast}}</h3>
+     <h3 align="center">Введите Ваш пол (0-Ж, 1-М): {{form.pol}}</h3>
+     <h3 align="center">У меня есть гипертония: {{form.gip}}</h3>
+     <h3 align="center">У меня есть болезнь сердца: {{form.heart}}</h3>
+     <h3 align="center">Я семейный(ая): {{form.sem}}</h3>
+     <h3 align="center">Тип работы (0 ребенок, 1 бюджетник, 2 безработный, 3 фирма, 4 частный предприниматель: {{form.work}}</h3>
+     <h3 align="center">Я городской(ая) : {{form.pro}}</h3>
+     <h3 align="center">Уровень сахара (через точку,норма обычно 4.9-5.5): {{form.sax}}</h3>
+     <h3 align="center">Отношение к курению (0-Не курит, 1-ранее курил, 2-неизвестно, 3-курит): {{form.kuru}}</h3>
+     <h3 align="center">Рост (целое): {{form.rost}}</h3>
+     <h3 align="center">Вес (целое): {{form.ves}}</h3>
+     <h3 align="center"><input id="btno" align="center" type="submit" value="Расчитать" /></h3>
+ </form>
+ </div>
+{% endblock %}

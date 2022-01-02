@@ -1,0 +1,52 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<br>
+{% if query   %}
+<h3 align="center">По запросу: "{{query}}" найдено {{results.count}} результатов</h3>
+<table align="center" border="1">
+  <tr>
+    <td>ID</td>
+    <td>Фамилия</td>
+    <td>Имя</td>
+    <td>Отчество</td>
+    <td>Дата рождения</td>
+    <td>СНИЛС</td>
+    <td>Редатирование</td>
+    <td>Выбор</td>
+  </tr>
+{% for item in results%}
+<tr>
+ <td>{{item.pk}}</td>
+ <td>{{item.f}}</td>
+ <td>{{item.i}}</td>
+ <td>{{item.o}}</td>
+ <td>{{item.dr}}</td>
+ <td>{{item.snils}}</td>
+ <td>
+  {% if item.prdead == 1 %}
+   Летальный исход
+   {% else %}
+   <a href="/editpac/{{item.pk}}">Редатировать</a>
+   {% endif %}
+ </td>
+ <td>
+   {% if item.prdead == 1 %}
+    Летальный исход
+    {% else %}
+   <a href="/newevac/{{item.pk}}">Добавить эвакуацию</a>
+   {% endif %}
+ </td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+<center><form align="center" action="" method="get">
+            {{ form.as_p}}
+            <input type="submit" title="Введите фамилию" value="Поиск">
+</form></center>
+<a href="/new_pac/"><h3 align="center">Добавить пациента</h3></a>
+{% else %}
+<h1 align="center">Только авторизованным пользователям!<h1>
+{% endif%}
+{% endblock %}

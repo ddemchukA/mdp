@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+ <head>
+
+  <link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+  <link rel="import" href="{% static "bea.html" %}">
+  <title>Состояние реанимационного больного администратор</title>
+  <script>
+  setTimeout(function(){
+  location.reload();
+  }, 180000);
+  </script>
+</head>
+<body>
+  {% block javascript %}
+  {% endblock %}
+<div class="menu">
+  <div class="menzav">
+   <h3 align="center">МЕНЮ</h3>
+ </div>
+ <button  onclick="document.location='/adminmodule/lpufrom'">ЛПУ вывоза</button><br>
+ <button  onclick="document.location='/adminmodule/lpudost'">ЛПУ доставки</button><br>
+ <button  onclick="document.location='/adminmodule/us'">Пользователи</button><br>
+ <button  onclick="document.location='/adminmodule/srmpl'">Средний персонал</button><br>
+ <button  onclick="document.location='/adminmodule/evado'">Текущие эвакуации</button><br>
+ <button  onclick="document.location='/adminmodule/stat'">Статистика</button><br>
+ </div>
+
+  <div class="content">
+    <div class="about1">
+      {% if user.is_authenticated %}
+     <h3 align="center">Авторизован:
+       {% if request.user.user_profile.is_list_doctor %}
+        эвакуирующий врач
+       {% endif %}
+       {% if request.user.user_profile.is_commit_doctor %}
+        принимающий врач
+       {% endif %}
+       {% if request.user.user_profile.is_superman %}
+        административный персонал
+       {% endif %}
+      {{request.user.last_name}} {{request.user.first_name}} ({{request.user}}) ЛПУ: {{request.user.user_profile.lpu.name}}<a href="/adminmodule/logout/"><<Выход>></a></h3>
+     {% else %}
+     <a href="/accounts/login/" id="but">Авторизоваться</a>
+     {% endif %}
+    </div>
+    <hr>
+    <div class="soder">
+      {% block content %}
+      {% endblock %}
+     {% block tabsheet %}
+     {% endblock %}
+    </div>
+  </div>
+
+</body>
+</html>

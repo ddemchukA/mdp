@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+ <head>
+  <meta charset="windows-1251">
+  <link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+  <title>{{title}}</title>
+
+</head>
+<body>
+  <div id="header">
+     <img id="logo" src="{% static "zm.png" %}" alt="logo">
+     <h1>Мониторинг реаниматологической ситуации в Алтайском крае</h1>
+     <h3>КГБУЗ АРЦ</h3>
+    </div>
+    <div id="menu">
+    </div>
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>

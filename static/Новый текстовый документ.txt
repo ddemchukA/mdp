@@ -1,0 +1,48 @@
+box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+  // Load google charts
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Draw the chart and set the chart values
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+    ['Центр', 'Количество'],
+    ['{{mfc}}', {{mfc_c}}],
+    ['{{romsu}}', {{romsu_c}}],
+    ['{{post}}', {{post_c}}],
+    ['{{mvd}}', {{mvd_c}}],
+    ['{{ost}}', {{ost_c}}]
+  ]);
+
+    // Optional; add a title and set the width and height of the chart
+    var options = {'title':'{{nam}}', 'width':400, 'height':300};
+
+    // Display the chart inside the <div> element with id="piechart"
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    chart.draw(data, options);
+  }
+  </script>
+
+<div id="piechart"></div>
+
+
+args['nam']="Статистика ЦО"
+    args['mfc']="МФЦ"
+    args['mfc_c']=71
+    args['romsu']="РОИВ/ОМСУ"
+    args['romsu_c']=29
+    args['post']="ПочтаРФ"
+    args['post_c']=33
+    args['mvd']="МВД"
+    args['mvd_c']=112
+    args['ost']="Остальное"
+    args['ost_c']=14
+
+
+
+urlpatterns = [
+    path(r'contacts', views.contacts, name='contacts'),
+]

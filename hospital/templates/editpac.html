@@ -1,0 +1,12 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+<h1 align="center">Введите все поля</h1>
+<br>
+<center>
+<form class="form1" action="" method="post">
+  {% csrf_token %}
+  {{ form.as_p}}
+  <button type="submit" name="button">Добавить</button>
+</form>
+</center>
+{% endblock %}

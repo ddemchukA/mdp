@@ -1,0 +1,12 @@
+{% extends "templadm/wrapper_h.html" %}
+{% block content %}
+<br>
+<center>
+<form class="form1" action="" method="post">
+  {% csrf_token %}
+  {{ form.as_p}}
+  <button type="submit" name="button">Сохранить</button>
+</form>
+</center>
+
+{% endblock %}

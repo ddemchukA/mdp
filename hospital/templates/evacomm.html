@@ -1,0 +1,241 @@
+{% extends "wrapper_h.html" %}
+{% block javascript %}
+<script>
+function openVklad(evt, bname) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(bname).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+{% endblock %}
+{% block content %}
+{% if poi.vputi == -1 %}
+<h3 align="center">Новая эвакуация</h3>
+{% endif %}
+{% if poi.vputi == 0 %}
+<h3 align="center">Готов к выезду</h3>
+{% endif %}
+{% if poi.vputi == 1 %}
+<h3 align="center">Выезд начат</h3>
+{% endif %}
+{% if poi.vputi == 2 %}
+<h3 align="center">Выезд идет. Есть срез состояния в пути</h3>
+{% endif %}
+{% if poi.vputi == 3 %}
+<h3 align="center">Оформлено состояние после эвакуации</h3>
+{% endif %}
+{% if poi.vputi == 4 %}
+<h3 align="center">Оформлена доставка в ЛПУ</h3>
+{% endif %}
+{% if poi.vputi == 5 %}
+<h3 align="center">Выезд идет. Больной принят в ЛПУ эвакуация закрыта</h3>
+{% endif %}
+{% if poi.vputi == 6 %}
+<h3 align="center">Летальный исход в пути</h3>
+{% endif %}
+ <center>
+ <table border="1">
+   <tr>
+     <td><strong>Параметр</strong></td>
+     <td><strong>Значение</strong></td>
+   </tr>
+   <tr>
+     <td>Номер эвакуации</td>
+     <td>{{poi.pk}}</td>
+   </tr>
+   <tr>
+     <td>Врач</td>
+     <td>{{poi.id_vrach.last_name}}</td>
+   </tr>
+   <tr>
+     <td>Пациент</td>
+     <td>{{poi.id_pac.f}} {{poi.id_pac.i}} {{poi.id_pac.o}}</td>
+   </tr>
+   <tr>
+     <td>СНИЛС</td>
+     <td>{{poi.id_pac.snils}}</td>
+   </tr>
+   <tr>
+     <td>Телефон родственника</td>
+     <td>{{poi.id_pac.telrod}}</td>
+   </tr>
+   <tr>
+     <td>Эвакуация из</td>
+     <td>{{poi.fromlpu}}</td>
+   </tr>
+   <tr>
+     <td>Средний медперсонал</td>
+     <td>{{poi.id_srmp}}</td>
+   </tr>
+   <tr>
+     <td>Предварительный диагноз эвакуирующего</td>
+     <td>{{poi.dscons}}</td>
+   </tr>
+   <tr>
+     <td>Дата и время выезда</td>
+     {% if poi.vzyat is not None %}
+     <td>{{poi.vzyat}}</td>
+     {% else %}
+     <td>не выехал</td>
+     {% endif %}
+   </tr>
+   <tr>
+     <td>Состояние</td>
+     {% if poi.vputi == -1 %}
+     <td>Новая эвакуация</td>
+     {% endif %}
+     {% if poi.vputi == 0 %}
+     <td>Готов к выезду</td>
+     {% endif %}
+     {% if poi.vputi == 1 %}
+     <td>Выезд начат</td>
+     {% endif %}
+     {% if poi.vputi == 2 %}
+     <td>Выезд идет. Есть срез состояния в пути</td>
+     {% endif %}
+     {% if poi.vputi == 3 %}
+     <td>Оформлено состояние после эвакуации</td>
+     {% endif %}
+     {% if poi.vputi == 4 %}
+     <td>Оформлена доставка в ЛПУ</td>
+     {% endif %}
+     {% if poi.vputi == 5 %}
+     <td>Больной принят в ЛПУ эвакуация закрыта</td>
+     {% endif %}
+     {% if poi.vputi == 6 %}
+     <td>Летальный исход в пути</td>
+     {% endif %}
+   </tr>
+ </table>
+ </center>
+{% endblock %}
+
+{% block tabsheet %}
+<br>
+<center>
+<div class="tab">
+ <button class="tablinks" onclick="openVklad(event, 'before')"  id="defa">Состояние до эвакуации</button>
+ <button class="tablinks" onclick="openVklad(event, 'intime')">Состояние во время эвакуации</button>
+ <button class="tablinks" onclick="openVklad(event, 'after')">Состояние после эвакуации</button>
+ <button class="tablinks" onclick="openVklad(event, 'dostav')">Оформить приём</button>
+
+</div>
+<!-- Tab content -->
+<div id="before" class="tabcontent">
+  {% if bef_is == "0" %}
+   <h3 align="center">Нет данных о состоянии до эвакуации</h3>
+  {% else %}
+   <h3 align="center">Данные о состоянии пациента до эвакуации</h3>
+   {% for a in bef %}
+    {% if a.valtype == 1 %}
+    -{{a.atrib}}<br>
+    {% endif %}
+    {% if a.valtype == 2 %}
+    -{{a.atrib}} : {{a.val_float}}<br>
+    {% endif %}
+    {% if a.valtype == 3 %}
+    -{{a.atrib}} : {{a.val_text}}<br>
+    {% endif %}
+   {% endfor %}
+  {% endif %}
+</div>
+
+<div id="intime" class="tabcontent">
+  <h3>Данные о состоянии в пути</h3>
+  {% for l in inti %}
+  <table border="1">
+    <tr><td><center><strong>Время среза: {{l.time}}</strong></center></td></tr>
+    <tr><td>
+   {% for pl in qps %}
+    {% if pl.intimetime_id == l.pk %}
+     {% if pl.valtype == 1 %}
+      {{pl.atrib}}<br>
+     {% elif pl.valtype == 2 %}
+      {{pl.atrib}} : {{pl.val_float}}<br>
+     {% elif pl.valtype == 3 %}
+      {{pl.atrib}} : {{pl.val_text}}<br>
+     {% endif %}
+    {% endif %}
+   {% endfor %}
+   </td></tr>
+   </table><br>
+  {% endfor %}
+</div>
+
+<div id="after" class="tabcontent">
+  <h3>Состояние пациента после эвакуации:</h3>
+   {% for aftu in aft %}
+   {% if aftu.valtype == 1 %}
+    {{aftu.atrib}}<br>
+   {% elif aftu.valtype == 2 %}
+    {{aftu.atrib}} : {{aftu.val_float}}<br>
+   {% elif aftu.valtype == 3 %}
+    {{aftu.atrib}} : {{aftu.val_text}}<br>
+   {% endif %}
+   {% endfor %}
+</div>
+
+<div id="dostav" class="tabcontent">
+ <h3>Оформление доставки</h3>
+ {% if poi.vputi < 4 %}
+  <h3>Еще не оформлена доставка</h3>
+ {% else %}
+ <table border="1">
+  <tr><td>Время события</td><td>Событие</td><td>ЛПУ</td><td>Добавлено</td><td>Примечание</td></tr>
+ {% for tk in dostk %}
+     <tr>
+       <td>
+         {{tk.timedeist}}
+      </td>
+      <td>
+        {% if tk.whatis == 0%}
+         Доставлен в ЛПУ
+        {% elif tk.whatis == 1 %}
+        Принят в ЛПУ
+        {% endif %}
+     </td>
+     <td>
+       {{tk.lpu}}
+    </td>
+    <td>
+      {{tk.us.last_name}}
+   </td>
+   <td>
+     {{tk.primech}}
+  </td>
+    </tr>
+ {% endfor %}
+ </table>
+ {% if poi.vputi == 4 %}
+  {% if dostk.0.lpu_id == request.user.user_profile.lpu_id %}
+  <a href = "/closecase/{{poi.id}}">Принять пациента</a>
+  {% else %}
+  <br>Доставка осуществленна не в ЛПУ, связанное с пользователем, оформление приема невозможно.
+  {% endif %}
+ {% endif %}
+{% endif %}
+{% if poi.vputi == 5 %}
+ <br><a href="/showeva/{{poi.id}}/1" target="_blank">Итоговая форма</a>
+{% endif %}
+</div>
+
+<script>
+document.getElementById("defa").click();
+</script>
+</center>
+{% endblock %}

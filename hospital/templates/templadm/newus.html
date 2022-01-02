@@ -1,0 +1,20 @@
+{% extends "templadm/wrapper_h.html" %}
+{% block content %}
+<center> <h1>Добавление нового врача</h1></center>
+<center>
+  <form class="form1" action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p}}
+    Выберите ЛПУ:
+    <p><select size="3" name="tipvr">
+    {% for i in lp %}
+     <option value="{{i.pk}}">{{i.name}}</option>
+    {% endfor %}
+   </select></p>
+   <input type="checkbox" id="scales" name="evac"> Эвакуирующий врач<br>
+   <input type="checkbox" id="scales" name="commit"> Принимающий врач<br><br>
+    <button type="submit" name="button">Сохранить</button>
+  </form><br>
+  </center>
+</center>
+{% endblock %}

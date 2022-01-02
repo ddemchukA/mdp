@@ -1,0 +1,28 @@
+<html>
+ <head>
+  <title>Авторизация</title>
+</head>
+<body>
+<style>
+  #avform{
+    background:#f1f1f1;
+        width:400px;
+        height:250px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin:-200px 0 0 -200px;
+  }
+</style>
+{% block content %}
+<div id="avform">
+<h1 align="center">Авторизуйтесь</h1><br>
+<form align="center" action="" method="post">
+  {% csrf_token %}
+ {{ form.as_p}}
+  <button type="submit" name="button">Вход</button></br>
+</form>
+</div>
+{% endblock %}
+</body>
+</html>

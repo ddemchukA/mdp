@@ -1,0 +1,13 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+ <h1 align="center">Вы желаете удалить следующию эвакуацию?</h1>
+ <center>
+ Врач: {{ppp.id_vrach.last_name}}<br>
+ Пациент: {{ppp.id_pac}}<br>
+ ЛПУ:{{ppp.fromlpu}}<br><br>
+ <form name="form2" action="" method="post">
+     {% csrf_token %}
+  <button type="submit" name="button">Удалить</button>
+  </form>
+ </center>
+{% endblock %}

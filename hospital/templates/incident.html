@@ -1,0 +1,66 @@
+{% extends "wrapper_h.html" %}
+{% block javascript %}
+<script>
+function openVklad(evt, bname) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(bname).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Tab links -->
+
+  <h3 align="center">Здесь отображаются данные конкретного реанимационного случая</h3><br>
+  <h3 align="center">ID: 2345</h3><br>
+  <h3 align="center">ЛПУ: Сочинская ЦРБ <a href="/lpu">(Открыть)</a> </h3><br>
+  <h3 align="center">Дата: 05.03.2021</h3><br>
+  <h3 align="center">Пациент: Макашвилии Гурген Николозович</h3><br>
+  <h3 align="center">Полных лет: 123</h3><br>
+  <h3 align="center">Текущий статус: Без динамики</h3><br>
+{% endblock %}
+{% block tabsheet %}
+<div class="tab">
+ <button class="tablinks" onclick="openVklad(event, 'Traffic')"  id="defa">Движение</button>
+ <button class="tablinks" onclick="openVklad(event, 'Diag')">Диагнозы</button>
+ <button class="tablinks" onclick="openVklad(event, 'Cons')">Консультации</button>
+ <button class="tablinks" onclick="openVklad(event, 'Evac')">Эвакуации</button>
+</div>
+<!-- Tab content -->
+
+<div id="Traffic" class="tabcontent">
+ <h3>Здесь будет информация о динамике и изменении состояний пациента</h3>
+</div>
+
+<div id="Diag" class="tabcontent">
+ <h3>Здесь таблица установленных диагнозов</h3>
+</div>
+
+<div id="Cons" class="tabcontent">
+ <h3>Здесь оказанные Центром консультации</h3>
+</div>
+
+<div id="Evac" class="tabcontent">
+ <h3>Здесь будут все перемещения пациента по данному случаю из ЛПУ в иные учреждения. Например, из Кытманово в Заринск итд</h3>
+</div>
+
+<script>
+document.getElementById("defa").click();
+</script>
+{% endblock %}

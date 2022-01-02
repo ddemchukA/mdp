@@ -1,0 +1,50 @@
+{% extends "templadm/wrapper_h.html" %}
+{% block content %}
+<center> <h1>Список пользователей врачей</h1></center>
+<center>
+ <table border="1">
+   <tr><td>Блокировка</td><td>Имя пользователя в системе</td><td>Название ЛПУ</td>
+     <td>ФИО</td>
+     <td>Роли</td>
+    <td>Действия</td>
+   </tr>
+  {% for i in use %}
+  {% if i.is_list_doctor == True or i.is_commit_doctor == True %}
+   <tr>
+   {% if i.user.is_active == True %}
+    <td>
+    {% else %}
+    <td bgcolor = "red">
+    {% endif %}
+      {% if i.user.is_active == True %}
+       <a href="/adminmodule/blcus/{{i.user.pk}}/1">Заблокировать<a>
+      {% else %}
+       <a href="/adminmodule/blcus/{{i.user.pk}}/0">Разблокировать<a>
+      {% endif %}
+    </td>
+    <td>{{i.user}}</td>
+    <td>{{i.lpu}}</td>
+    <td>{{i.user.last_name}}</td>
+    <td>
+       {% if i.is_commit_doctor %}
+        Принимающий врач
+       {% endif %}
+       {% if i.is_list_doctor %}
+        Эвакуирующий врач
+       {% endif %}
+    </td>
+    <td>
+      {% if i.user.is_active == True %}
+       <a href="/adminmodule/chpass/{{i.user.pk}}">Сменить пароль</a><br>
+       <a href="/adminmodule/chdata/{{i.user.pk}}">Изменить данные</a>
+      {% else %}
+      Заблокирован
+      {% endif %}
+    </td>
+  </tr>
+  {% endif %}
+  {% endfor %}
+ </table><br>
+ <a href="/adminmodule/newus">Добавить врача</a>
+</center>
+{% endblock %}

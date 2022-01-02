@@ -1,0 +1,10 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+ <h1 align="center">Вы желаете удалить срез за: {{ppp.time}} ?</h1>
+ <center>
+ <form name="form2" action="" method="post">
+     {% csrf_token %}
+  <button type="submit" name="button">Удалить</button>
+  </form>
+ </center>
+{% endblock %}

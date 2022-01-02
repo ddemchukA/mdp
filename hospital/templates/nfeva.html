@@ -1,0 +1,34 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<br>
+{% if query   %}
+<h3 align="center">По запросу: "{{query}}" найдено {{results.count}} результатов</h3>
+<table align="center" border="1">
+  <tr><td>Номер</td><td>Эвакуация из</td><td>Фамилия пациента</td><td>Действие</td></tr>
+  {% for item in results %}
+  <tr>
+    <td>
+      {{item.id}}
+    </td>
+    <td>
+      {{item.fromlpu}}
+    </td>
+    <td>
+      {{item.id_pac}}
+    </td>
+    <td>
+      <a href="/showeva/{{item.id}}/0">Перейти</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+<center><form align="center" action="" method="get">
+            {{ form.as_p}}
+            <input type="submit" title="Введите номер эвакуации" value="Поиск">
+</form></center>
+{% else %}
+<h1 align="center">Только авторизованным пользователям!<h1>
+{% endif%}
+{% endblock %}

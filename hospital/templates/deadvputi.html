@@ -1,0 +1,14 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+ <h1 align="center">Оформить летльный исход по эвакуации № {{ppp.id}} ?</h1><br>
+ <h3 align="center">Данное действие необратимо</h3>
+ <center>
+ <form name="form2" action="" method="post">
+     {% csrf_token %}
+   <input name="numcase" type="text" value="{{number}}" hidden><br>
+   <p><b>Введите примечание:</b></p>
+    <p><textarea id="textar" rows="10" cols="100" name="text"></textarea></p>
+  <button type="submit" name="button">Оформить!</button>
+  </form>
+ </center>
+{% endblock %}

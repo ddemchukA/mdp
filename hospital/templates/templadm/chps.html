@@ -1,0 +1,12 @@
+{% extends "templadm/wrapper_h.html" %}
+{% block content %}
+<center> <h1>Смена пароля для пользователя: {{lp.username}} ({{lp.last_name}})</h1></center>
+<center>
+  <form class="form1" action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit" name="button">Сохранить</button>
+  </form><br>
+  </center>
+</center>
+{% endblock %}

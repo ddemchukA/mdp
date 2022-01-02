@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+ <head>
+
+  <link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+  <link rel="import" href="{% static "bea.html" %}">
+  <title>Состояние реанимационного больного</title>
+
+</head>
+<body>
+  {% block javascript %}
+  {% endblock %}
+<div class="menu">
+  <div class="menzav">
+   <h3 align="center">МЕНЮ</h3>
+ </div>
+ {% if request.user.user_profile.is_list_doctor %}
+ <button  onclick="document.location='/pac'">Пациент</button><br>
+ {% endif %}
+
+ {% if request.user.user_profile.is_commit_doctor or request.user.user_profile.is_superman %}
+ <button  onclick="document.location='/findeva'">Поиск эвакуации</button><br>
+ {% endif %}
+
+ {% if request.user.user_profile.is_superman %}
+ <button  onclick="document.location='/findeva'">Текущие эвакуации</button><br>
+ {% endif %}
+
+ {% if request.user.user_profile.is_superman %}
+ <button  onclick="document.location='/stat'">Статистика</button><br>
+ {% endif %}
+
+ {% if request.user.user_profile.is_list_doctor %}
+ <button  onclick="document.location='/now_eva'">Текущая эвакуация</button><br>
+ {% endif %}
+ <button  onclick="document.location='/expertins'">Инсульт</button><br>
+ {% if request.user.user.is_superuser %}
+ <button  onclick="document.location='/study_insult'">Инсульт данные</button><br>
+ {% endif %}
+ {% if request.user.user.is_superuser %}
+ <button  onclick="document.location='/data_ins'">Датасет Инсульт</button><br>
+ {% endif %}
+ </div>
+
+  <div class="content">
+    <div class="about1">
+      {% if user.is_authenticated %}
+     <h3 align="center">Авторизован:
+       {% if request.user.user_profile.is_list_doctor %}
+        эвакуирующий врач
+       {% endif %}
+       {% if request.user.user_profile.is_commit_doctor %}
+        принимающий врач
+       {% endif %}
+       {% if request.user.user_profile.is_superman %}
+        административный персонал
+       {% endif %}
+      {{request.user.last_name}} {{request.user.first_name}} ({{request.user}}) ЛПУ: {{request.user.user_profile.lpu.name}}<a href="/logout/"><<Выход>></a></h3>
+     {% else %}
+     <a href="/accounts/login/" id="but">Авторизоваться</a>
+     {% endif %}
+    </div>
+    <hr>
+    <div class="soder">
+      {% block content %}
+      {% endblock %}
+     {% block tabsheet %}
+     {% endblock %}
+    </div>
+  </div>
+
+</body>
+</html>

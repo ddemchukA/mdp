@@ -1,0 +1,64 @@
+{% extends "wrapper_h.html" %}
+{% block javascript %}
+<script>
+function openVklad(evt, bname) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(bname).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Tab links -->
+  <h3 align="center">Здесь отображаются данные выбраной ЛПУ</h3><br>
+  <h3 align="center">Данные ЛПУ: Сочинская ЦРБ</h3><br>
+  <h3 align="center">ID: 2</h3><br>
+  <h3 align="center">Адрес: г. Сочи ул., Орджиникидзе, 27</h3><br>
+  <h3 align="center">Главный врач: Авакян Армен Вартанович</h3><br>
+  <h3 align="center">Телефон реанимации: +7 3822 33-44-55</h3><br>
+{% endblock %}
+{% block tabsheet %}
+<div class="tab">
+ <button class="tablinks" onclick="openVklad(event, 'Traffic')"  id="defa">Кадры</button>
+ <button class="tablinks" onclick="openVklad(event, 'Diag')">Оборудование</button>
+ <button class="tablinks" onclick="openVklad(event, 'Cons')">Автотранспорт</button>
+</div>
+<!-- Tab content -->
+
+<div id="Traffic" class="tabcontent">
+ <h3>Кадры:</h3><hr>
+ <h3>Здесь информационное окно, отображающее врачебные кадры в реанимации ЛПУ и их компетенции</h3>
+</div>
+
+
+<div id="Diag" class="tabcontent">
+  <h3>Оборудование:</h3><hr>
+ <h3>Здесь описания реанимационного оборудования</h3>
+</div>
+
+<div id="Cons" class="tabcontent">
+  <h3>Автотранспорт:</h3><hr>
+ <h3>Здесь описание ренимобилей (если таковые имеются)</h3>
+</div>
+
+
+<script>
+document.getElementById("defa").click();
+</script>
+{% endblock %}

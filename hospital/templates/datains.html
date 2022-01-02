@@ -1,0 +1,39 @@
+{% extends "wrapper_h.html" %}
+{% block content %}
+<table align="center"border="1">
+ <tr bgcolor="black">
+   <td><font color="white">Код</td>
+   <td><font color="white">Возраст</td>
+   <td><font color="white">Пол</td>
+   <td><font color="white">Гипертония</td>
+   <td><font color="white">Болезнь сердца</td>
+   <td><font color="white">Семейный (ая)</td>
+   <td><font color="white">Тип работы</td>
+   <td><font color="white">Городской(ая)</td>
+   <td><font color="white">Уровень сахара</td>
+   <td><font color="white">Курение</td>
+   <td><font color="white">Рост</td>
+   <td><font color="white">Вес</td>
+   <td><font color="white">Был / не был инсульт</td>
+   <td><font color="white">Внес пользователь</td>
+ </tr>
+{% for item in spi %}
+ <tr>
+ <td>{{item.id}}</td>
+ <td>{{item.vozrast}}</td>
+ <td>{{item.pol}}</td>
+ <td>{{item.gip}}</td>
+ <td>{{item.heart}}</td>
+ <td>{{item.sem}}</td>
+ <td>{{item.work}}</td>
+ <td>{{item.pro}}</td>
+ <td>{{item.sax}}</td>
+ <td>{{item.kuru}}</td>
+ <td>{{item.rost}}</td>
+ <td>{{item.ves}}</td>
+ <td>{{item.rezult}}</td>
+ <td>{{item.use}}</td>
+</tr>
+{%endfor%}
+</table>
+{% endblock %}
