@@ -29,8 +29,6 @@ def checkdelete():
 
 @login_required
 def riskan(request,csid):
-    if not request.user.user_profile.is_list_doctor:
-        return HttpResponse('<h1 align=\"center\">Данный процесс доступен ТОЛЬКО эвакуирующему врачу!</h1>')
     ak=podg(csid)
     f=ak.vivod()
     arg={}

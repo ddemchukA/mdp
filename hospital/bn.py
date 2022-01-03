@@ -59,11 +59,54 @@ class podg:
         if pv in range(13,16):
             self.param['glazg']=[0,0,0,1]
 
+    def __get_dix(self,bf):
+        for kl in bf:
+            if kl.atrib_id == 40:
+                self.param['dix']=[1,0,0,0]
+            if kl.atrib_id == 41:
+                self.param['dix']=[0,1,0,0]
+            if kl.atrib_id == 47:
+                self.param['dix']=[0,0,1,0]
+            if kl.atrib_id == 48:
+                self.param['dix']=[0,0,0,1]
+
+    def __get_satur(self,bf):
+        for kl in bf:
+            if kl.atrib_id == 58:
+                pv=kl.val_float
+        if pv in range(0,91):
+            self.param['satur']=[1,0,0]
+        if pv in range(91,94):
+            self.param['satur']=[0,1,0]
+        if pv in range(94,101):
+            self.param['satur']=[0,0,1]
+
+    def __get_transp(self,cs):
+        if cs.id_trans_id == 1:
+            self.param['transp']=[1,0]
+        if cs.id_trans_id == 3:
+            self.param['transp']=[0,1]
+
+    def __get_road(self,cs):
+        pv=cs.fromlpu.roadrate
+        if pv >=0 and pv<=2:
+            self.param['roadrate']=[1,0,0]
+        if pv >2 and pv<=3:
+            self.param['roadrate']=[0,1,0]
+        if pv >3 and pv<=5:
+            self.param['roadrate']=[0,0,1]
+
+
     def __formsp(self):
         cs=self.__get_case()
         bf=self.__get_bf()
         self.__get_sost(bf)
         self.__get_glazgo(bf)
+        self.__get_dix(bf)
+        self.__get_dix(bf)
+        self.__get_satur(bf)
+        self.__get_transp(cs)
+        self.__get_road(cs)
         return self.param
 
     def vivod(self):

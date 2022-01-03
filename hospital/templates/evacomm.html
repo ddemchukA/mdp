@@ -140,7 +140,8 @@ function openVklad(evt, bname) {
   {% if bef_is == "0" %}
    <h3 align="center">Нет данных о состоянии до эвакуации</h3>
   {% else %}
-   <h3 align="center">Данные о состоянии пациента до эвакуации</h3>
+   <h3 align="center">Данные о состоянии пациента до эвакуации</h3><br>
+   <a href="/riskan/{{poi.pk}}">Анализ рисков</a><br><br>
    {% for a in bef %}
     {% if a.valtype == 1 %}
     -{{a.atrib}}<br>
