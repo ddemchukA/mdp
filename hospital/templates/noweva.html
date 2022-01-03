@@ -127,6 +127,7 @@ function openVklad(evt, bname) {
    <h3 align="center">Нет данных о состоянии до эвакуации <a href="/new_bef/{{poi.id}}">добавить</a></h3>
   {% elif poi.vputi > -1 %}
    <h3 align="center">Данные о состоянии пациента до эвакуации</h3>
+   <a href="/riskan/{{poi.pk}}">Анализ рисков</a><br><br>
    {% if poi.vputi == 0 %}
     <a href="/delbef/{{poi.pk}}">Удалить</a><br><br>
    {% endif %}

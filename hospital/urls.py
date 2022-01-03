@@ -31,4 +31,5 @@ urlpatterns = [
     path(r'editpac/<int:pacid>/',views.editpac,name='editpac'),
     path(r'deadvputi/<int:caseid>/<int:pacid>/',views.deadvputi,name='deadvputi'),
     path(r'komglas',views.komglas,name='komglas'),
+    path(r'riskan/<int:csid>/',views.riskan,name='riskan'),
 ]

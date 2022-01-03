@@ -21,9 +21,22 @@ from .forms import insform, insformstudy,LoginForm,SearchForm, NP, NE, Dostav,Se
 from .models import Insultik,patient,case, before, atributes, after, intime,intimetime,dostavlen,deadinroad
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Permission
+from .bn import podg
 
 def checkdelete():
     return True
+
+
+@login_required
+def riskan(request,csid):
+    if not request.user.user_profile.is_list_doctor:
+        return HttpResponse('<h1 align=\"center\">Данный процесс доступен ТОЛЬКО эвакуирующему врачу!</h1>')
+    ak=podg(csid)
+    f=ak.vivod()
+    arg={}
+    arg['vivod']=f
+    return render(request,'riskan.html',arg)
+
 
 @login_required
 def editpac(request,pacid):
