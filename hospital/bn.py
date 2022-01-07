@@ -21,6 +21,7 @@ from .forms import insform, insformstudy,LoginForm,SearchForm, NP, NE, Dostav,Se
 from .models import Insultik,patient,case, before, atributes, after, intime,intimetime,dostavlen,deadinroad
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Permission
+import pyAgrum as gum
 
 class podg:
     param={}
@@ -35,16 +36,7 @@ class podg:
     def __get_bf(self):
         ak=before.objects.filter(case_id=self.nom)
         return ak
-    def __get_sost(self,bf):
-        sps=[]
-        for kl in bf:
-            sps.append(kl.atrib_id)
-        if 2 in sps:
-            self.param['sost']=[1,0,0]
-        if 3 in sps:
-            self.param['sost']=[0,1,0]
-        if 4 in sps or 5 in sps or 6 in sps :
-            self.param['sost']=[0,0,1]
+
     def __get_glazgo(self,bf):
         sps=[]
         for kl in bf:
@@ -62,13 +54,11 @@ class podg:
     def __get_dix(self,bf):
         for kl in bf:
             if kl.atrib_id == 40:
-                self.param['dix']=[1,0,0,0]
+                self.param['dix']=[1,0,0]
             if kl.atrib_id == 41:
-                self.param['dix']=[0,1,0,0]
-            if kl.atrib_id == 47:
-                self.param['dix']=[0,0,1,0]
-            if kl.atrib_id == 48:
-                self.param['dix']=[0,0,0,1]
+                self.param['dix']=[0,1,0]
+            if kl.atrib_id == 47 or kl.atrib_id == 48:
+                self.param['dix']=[0,0,1]
 
     def __get_satur(self,bf):
         for kl in bf:
@@ -100,9 +90,7 @@ class podg:
     def __formsp(self):
         cs=self.__get_case()
         bf=self.__get_bf()
-        self.__get_sost(bf)
         self.__get_glazgo(bf)
-        self.__get_dix(bf)
         self.__get_dix(bf)
         self.__get_satur(bf)
         self.__get_transp(cs)
@@ -111,4 +99,23 @@ class podg:
 
     def vivod(self):
         kk=self.__formsp()
-        return kk
+        bn1=gum.BayesNet('MedRisk')
+        riskdix = bn1.add(gum.LabelizedVariable ( 'riskdix' , 'itogdix', 2))
+        bn1.cpt(riskdix).fillWith([0.0,0.0])
+        komgl=bn1.add('komgl',4)
+        tipdix=bn1.add('tipdix',3)
+        satur=bn1.add('satur',3)
+        bn1=gum.fastBN("komgl[1,4]->riskdix[1,2];tipdix[1,3]->riskdix[1,2];satur[1,3]->riskdix[1,2]")
+        bn1.cpt("komgl")[:] = kk['glazg']
+        bn1.cpt("tipdix")[:] = kk['dix']
+        bn1.cpt("satur")[:] = kk['satur']
+        bn1.cpt("riskdix")[{'komgl':0, 'tipdix':2, 'satur':0}] = [0.99,0.01]
+        ie=gum.LazyPropagation(bn1)
+        ie.makeInference()
+        resu=ie.posterior('riskdix')
+        k=resu.tolist()
+        k1={}
+        k1['riskdix']={}
+        k1['riskdix']['critical']=k[0]
+        k1['riskdix']['non_critical']=k[1]
+        return k1
