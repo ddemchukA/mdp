@@ -50,6 +50,12 @@ class podg:
             self.param['glazg']=[0,0,1,0]
         if pv in range(13,16):
             self.param['glazg']=[0,0,0,1]
+        if pv == 8:
+            self.param['glazg']=[0.5,0.5,0,0]
+        if pv == 11:
+            self.param['glazg']=[0,0.5,0.5,0]
+        if pv == 13:
+            self.param['glazg']=[0,0,0.5,0.5]
 
     def __get_dix(self,bf):
         for kl in bf:
@@ -57,7 +63,7 @@ class podg:
                 self.param['dix']=[1,0,0]
             if kl.atrib_id == 41:
                 self.param['dix']=[0,1,0]
-            if kl.atrib_id == 47 or kl.atrib_id == 48:
+            if kl.atrib_id == 43 or kl.atrib_id == 44:
                 self.param['dix']=[0,0,1]
 
     def __get_satur(self,bf):
@@ -70,6 +76,10 @@ class podg:
             self.param['satur']=[0,1,0]
         if pv in range(94,101):
             self.param['satur']=[0,0,1]
+        if pv == 90:
+            self.param['satur']=[0.5,0.5,0]
+        if pv == 93:
+            self.param['satur']=[0,0.5,0.5]
 
     def __get_transp(self,cs):
         if cs.id_trans_id == 1:
@@ -109,13 +119,52 @@ class podg:
         bn1.cpt("komgl")[:] = kk['glazg']
         bn1.cpt("tipdix")[:] = kk['dix']
         bn1.cpt("satur")[:] = kk['satur']
-        bn1.cpt("riskdix")[{'komgl':0, 'tipdix':2, 'satur':0}] = [0.99,0.01]
+        #Нарушения дыхания
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':0, 'komgl':0}] = [0.9,0.1]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':0, 'komgl':1}] = [0.9,0.1]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':0, 'komgl':2}] = [0.9,0.1]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':0, 'komgl':3}] = [0.8,0.2]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':1, 'komgl':0}] = [0.9,0.1]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':1, 'komgl':1}] = [0.9,0.1]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':1, 'komgl':2}] = [0.9,0.1]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':1, 'komgl':3}] = [0.8,0.2]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':2, 'komgl':0}] = [0.6,0.4]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':2, 'komgl':1}] = [0.6,0.4]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':2, 'komgl':2}] = [0.5,0.5]
+        bn1.cpt("riskdix")[{'satur':0, 'tipdix':2, 'komgl':3}] = [0.5,0.5]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':0, 'komgl':0}] = [0.7,0.3]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':0, 'komgl':1}] = [0.7,0.3]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':0, 'komgl':2}] = [0.7,0.3]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':0, 'komgl':3}] = [0.6,0.4]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':1, 'komgl':0}] = [0.7,0.3]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':1, 'komgl':1}] = [0.7,0.3]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':1, 'komgl':2}] = [0.7,0.3]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':1, 'komgl':3}] = [0.6,0.4]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':2, 'komgl':0}] = [0.5,0.5]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':2, 'komgl':1}] = [0.5,0.5]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':2, 'komgl':2}] = [0.5,0.5]
+        bn1.cpt("riskdix")[{'satur':1, 'tipdix':2, 'komgl':3}] = [0.5,0.5]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':0, 'komgl':0}] = [0.6,0.4]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':0, 'komgl':1}] = [0.6,0.4]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':0, 'komgl':2}] = [0.5,0.5]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':0, 'komgl':3}] = [0.1,0.9]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':1, 'komgl':0}] = [0.7,0.3]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':1, 'komgl':1}] = [0.6,0.6]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':1, 'komgl':2}] = [0.3,0.7]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':1, 'komgl':3}] = [0.1,0.9]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':2, 'komgl':0}] = [0.3,0.7]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':2, 'komgl':1}] = [0.3,0.7]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':2, 'komgl':2}] = [0.3,0.7]
+        bn1.cpt("riskdix")[{'satur':2, 'tipdix':2, 'komgl':3}] = [0.3,0.7]
+
+
+
         ie=gum.LazyPropagation(bn1)
         ie.makeInference()
         resu=ie.posterior('riskdix')
         k=resu.tolist()
         k1={}
         k1['riskdix']={}
-        k1['riskdix']['critical']=k[0]
-        k1['riskdix']['non_critical']=k[1]
+        k1['riskdix']['critical']=round(k[0],2)
+        k1['riskdix']['non_critical']=round(k[1],2)
         return k1
