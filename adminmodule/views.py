@@ -294,6 +294,8 @@ def evado(request):
             j.sost='Выезд идет.Есть срез состояния в пути'
         if j.vputi==3:
             j.sost='Оформлено состояние после эвакуации'
+        if j.vputi==4:
+            j.sost='Оформлена доставка в ЛПУ. Эвакуация закрыта'
         if j.vputi>=1:
             delta=datetime.now().replace(tzinfo=None)-j.vzyat.replace(tzinfo=None)
             dur=delta.total_seconds()
