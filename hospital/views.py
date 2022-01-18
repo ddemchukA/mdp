@@ -74,7 +74,7 @@ def closecase(request,caseid):
            mod.primech=request.POST.get('primech')
            mod.us_id=request.user.id
            mod.save()
-           urla='/showeva/'+str(caseid)
+           urla='/showeva/'+str(caseid)+'/0'
            return redirect(urla)
     else:
         form=Priem()

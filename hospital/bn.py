@@ -32,31 +32,39 @@ class podg:
     def __get_case(self):
         ak=case.objects.get(pk=self.nom)
         return ak
-
+#получение из БД
     def __get_bf(self):
         ak=before.objects.filter(case_id=self.nom)
         return ak
-
+#Получение списка на вход сети кома Глазго
     def __get_glazgo(self,bf):
         sps=[]
         for kl in bf:
             if kl.atrib_id == 31:
                 pv=kl.val_float
-        if pv in range(0,9):
-            self.param['glazg']=[1,0,0,0]
-        if pv in range(9,12):
-            self.param['glazg']=[0,1,0,0]
-        if pv in range(11,14):
-            self.param['glazg']=[0,0,1,0]
-        if pv in range(13,16):
-            self.param['glazg']=[0,0,0,1]
-        if pv == 8:
-            self.param['glazg']=[0.5,0.5,0,0]
-        if pv == 11:
-            self.param['glazg']=[0,0.5,0.5,0]
-        if pv == 13:
-            self.param['glazg']=[0,0,0.5,0.5]
-
+        self.param['glazg']=[0,0,0,0]
+        if pv in range(0,7):
+            self.param['glazg'][0]=1
+        if pv in range(7,10):
+            y=-1*0.5(pv-7)+1
+            y1=0.5*(pv-9)+1
+            self.param['glazg'][0]=round(y,1)
+            self.param['glazg'][1]=round(y1,1)
+        if pv > 9 and pv <10:
+            self.param['glazg'][1]=1
+        if pv in range(10,13):
+            y=-1*0.5*(pv-10)+1
+            y1=0.5*(pv-12)+1
+            self.param['glazg'][1]=round(y,1)
+            self.param['glazg'][2]=round(y1,1)
+        if pv in range(12,15):
+            y=-1*0.5*(pv-12)+1
+            y1=0.5*(pv-14)+1
+            self.param['glazg'][2]=round(y,1)
+            self.param['glazg'][3]=round(y1,1)
+        if pv > 14:
+            self.param['glazg'][3]=1
+#Список тип дыхания
     def __get_dix(self,bf):
         for kl in bf:
             if kl.atrib_id == 40:
@@ -65,7 +73,7 @@ class podg:
                 self.param['dix']=[0,1,0]
             if kl.atrib_id == 43 or kl.atrib_id == 44:
                 self.param['dix']=[0,0,1]
-
+#Список сатураций
     def __get_satur(self,bf):
         for kl in bf:
             if kl.atrib_id == 58:
@@ -88,7 +96,7 @@ class podg:
         if pv > 94:
             self.param['satur'][2]=1
 
-
+#Список давление
     def __get_press(self,bf):
         for kl in bf:
             if kl.atrib_id == 68:
@@ -116,53 +124,78 @@ class podg:
 
 
 
-
+#Список пульс
     def __get_puls(self,bf):
         for kl in bf:
             if kl.atrib_id == 67:
                 pv=kl.val_float
-        if pv in range(0,56):
-            self.param['pulse']=[1,0,0]
-        if pv in range(55,81):
-            self.param['pulse']=[0,1,0]
-        if pv in range(80,300):
-            self.param['pulse']=[0,0,1]
-        if pv == 55:
-            self.param['pulse']=[0.5,0.5,0]
-        if pv == 80:
-            self.param['pulse']=[0,0.5,0.5]
+        self.param['pulse']=[0,0,0]
+        if pv in range(0,49):
+            self.param['pulse'][0]=1
+        if pv in range(50,61):
+            y=-1*0.1*(pv-50)+1
+            y1=0.1*(pv-60)+1
+            self.param['pulse'][0]=round(y,1)
+            self.param['pulse'][1]=round(y1,1)
+        if pv in range(61,75):
+            self.param['pulse'][1]=1
+        if pv in range(75,86):
+            y=-1*0.1*(pv-75)+1
+            y1=0.1*(pv-85)+1
+            self.param['pulse'][1]=round(y,1)
+            self.param['pulse'][2]=round(y1,1)
+        if pv > 85:
+            self.param['pulse'][2]=1
 
-
+#Список сатураций диурез
     def __get_diurez(self,bf):
         for kl in bf:
             if kl.atrib_id == 75:
                 pv=kl.val_float
-        if pv in range(0,31):
-            self.param['diurez']=[1,0,0]
-        if pv in range(30,101):
-            self.param['diurez']=[0,1,0]
-        if pv in range(100,300):
-            self.param['diurez']=[0,0,1]
-        if pv == 30:
-            self.param['diurez']=[0.5,0.5,0]
-        if pv == 100:
-            self.param['diurez']=[0,0.5,0.5]
+        self.param['diurez']=[0,0,0]
+        if pv in range(0,20):
+            self.param['diurez'][0]=1
+        if pv in range(20,41):
+            y=-1*0.05*(pv-20)+1
+            y1=0.05*(pv-40)+1
+            self.param['diurez'][0]=round(y,1)
+            self.param['diurez'][1]=round(y1,1)
+        if pv in range(41,90):
+            self.param['diurez'][1]=1
+        if pv in range(90,111):
+            y=-1*0.05*(pv-90)+1
+            y1=0.05*(pv-100)+1
+            self.param['diurez'][1]=round(y,1)
+            self.param['diurez'][2]=round(y1,1)
+        if pv > 110:
+            self.param['diurez'][2]=1
 
-
+#Список тип транспорта
     def __get_transp(self,cs):
         if cs.id_trans_id == 1:
             self.param['transp']=[1,0]
         if cs.id_trans_id == 3:
             self.param['transp']=[0,1]
-
+#Список комплексная оценка дороги
     def __get_road(self,cs):
         pv=cs.fromlpu.roadrate
-        if pv >=0 and pv<=2:
-            self.param['roadrate']=[1,0,0]
-        if pv >2 and pv<=3:
-            self.param['roadrate']=[0,1,0]
-        if pv >3 and pv<=5:
-            self.param['roadrate']=[0,0,1]
+        self.param['roadrate']=[0,0,0]
+        if pv >=0 and pv < 1.8:
+            self.param['roadrate'][0]=1
+        if pv >= 1.8 and pv<=2.2:
+            y=-1*2.5*round((pv-1.8),1)+1
+            y1=2.5*round((pv-2.2),1)+1
+            self.param['roadrate'][0]=round(y,1)
+            self.param['roadrate'][1]=round(y1,1)
+        if pv > 2.2 and pv < 2.8:
+            self.param['roadrate'][1]=1
+        if pv >= 2.8 and pv <= 3.2:
+            y=-1*2.5*round((pv-2.8),1)+1
+            y1=2.5*round((pv-3.2),1)+1
+            self.param['roadrate'][1]=round(y,1)
+            self.param['roadrate'][2]=round(y1,1)
+        if pv > 3.2:
+            self.param['roadrate'][2]=1
 
 
     def __formsp(self):
@@ -200,6 +233,8 @@ class podg:
         press=bn1.add('press',3)
         diurez=bn1.add('diurez',3)
         bn1=gum.fastBN("komgl[1,4]->riskdix[1,2];tipdix[1,3]->riskdix[1,2];satur[1,3]->riskdix[1,2];avto[1,2]->riskdor[1,2];roadrate[1,3]->riskdor[1,2];komgl[1,4]->riskdor[1,2];tipdix[1,3]->riskdor[1,2];diurez[1,3]->riskheart[1,2];press[1,3]->riskheart[1,2];puls[1,3]->riskheart[1,2];komgl[1,4]->obssom[1,2];tipdix[1,3]->obssom[1,2];satur[1,3]->obssom[1,2];press[1,3]->obssom[1,2];roadrate[1,3]->obssom[1,2];riskdix[1,2]->obsrisk[1,2];riskheart[1,2]->obsrisk[1,2];obssom[1,2]->obsrisk[1,2];riskdor[1,2]->obsrisk[1,2]")
+        #Тут списки на вход сети
+        #Например для комы глазго в интервале от 0-8 bn1.cpt("komgl")[:] =[1,0,0,0]
         bn1.cpt("komgl")[:] = kk['glazg']
         bn1.cpt("tipdix")[:] = kk['dix']
         bn1.cpt("satur")[:] = kk['satur']

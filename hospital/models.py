@@ -116,7 +116,7 @@ class atributes(models.Model):
     fortab=models.CharField(max_length=150,default="before,after,intime")
     group=models.IntegerField(default=0)
     def __str__(self):
-        return str(self.pk)+' '+str(self.nazv)
+        return str(self.nazv)
 
 class before(models.Model):
     atrib=models.ForeignKey('atributes', on_delete=models.PROTECT)
