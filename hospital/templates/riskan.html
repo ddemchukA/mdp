@@ -1,4 +1,88 @@
 {% extends "wrapper_h.html" %}
 {% block content %}
-<center><h1>{{vivod}}</h1></center>
+<center><h1>Расчет риска транспортировки методом экспертного анализа</h1><br>
+  <h3>Вероятность ухудшения состояния пациента при транспортировке: {{vivod.obsrisk.Risk}}%</h3><br>
+  <h3>Идентификация рисков:</h3><br>
+  <table border=1>
+    <tr><td>Тип риска</td><td>Вероятность</td><td>Критичность</td>
+    <tr {% if vivod.riskdix.critical >= 50 %}
+      bgcolor="red"
+    {% endif %}
+    {% if vivod.riskdix.critical >= 20 and vivod.riskdix.critical < 50 %}
+     bgcolor="yellow"
+    {%endif%}><td>Дыхательные риски</td><td>{{vivod.riskdix.critical}}%</td>
+    <td>
+      {% if vivod.riskdix.critical >= 50 %}
+        Высокий
+      {% endif %}
+      {% if vivod.riskdix.critical >= 20 and vivod.riskdix.critical < 50 %}
+       Средний
+      {%endif%}
+      {% if vivod.riskdix.critical < 20 %}
+        Низкий
+      {% endif %}
+    </td></tr>
+
+    <tr {% if vivod.riskheart.Critical >= 50 %}
+      bgcolor="red"
+    {% endif %}
+    {% if vivod.riskheart.Critical >= 20 and vivod.riskheart.Critical < 50 %}
+     bgcolor="yellow"
+    {%endif%}><td>Сердечно-сосудистые риски</td><td>{{vivod.riskheart.Critical}}%</td>
+    <td>
+      {% if vivod.riskheart.Critical >= 50 %}
+        Высокий
+      {% endif %}
+      {% if vivod.riskheart.Critical >= 20 and vivod.riskheart.Critical < 50 %}
+       Средний
+      {%endif%}
+      {% if vivod.riskheart.Critical < 20 %}
+        Низкий
+      {% endif %}
+    </td></tr>
+
+    <tr{% if vivod.obssom.Critical >= 50 %}
+      bgcolor="red"
+    {% endif %}
+    {% if vivod.obssom.Critical >= 20 and vivod.obssom.Critical < 50 %}
+     bgcolor="yellow"
+    {%endif%}><td>Риски общесоматического состояния</td><td>{{vivod.obssom.Critical}}%</td>
+    <td>
+      {% if vivod.obssom.Critical >= 50 %}
+        Высокий
+      {% endif %}
+      {% if vivod.obssom.Critical >= 20 and vivod.obssom.Critical < 50 %}
+       Средний
+      {%endif%}
+      {% if vivod.obssom.Critical < 20 %}
+        Низкий
+      {% endif %}
+    </td></tr>
+
+    <tr{% if vivod.riskdor.Yes >= 50 %}
+      bgcolor="red"
+    {% endif %}
+    {% if vivod.riskdor.Yes >= 20 and vivod.riskdor.Yes < 50 %}
+     bgcolor="yellow"
+    {%endif%}><td>Риски дорожных эксцессов</td><td>{{vivod.riskdor.Yes}}%</td>
+    <td>
+      {% if vivod.riskdor.Yes >= 50 %}
+        Высокий
+      {% endif %}
+      {% if vivod.riskdor.Yes >= 20 and vivod.riskdor.Yes < 50 %}
+       Средний
+      {%endif%}
+      {% if vivod.riskdor.Yes < 20 %}
+        Низкий
+      {% endif %}
+    </td></tr>
+  </table><br>
+  {%if vivod.uncertainty > 0%}
+   <h3> Работа сети в условиях неопределенности {{vivod.uncertainty}}% : {{vivod.unc_str}}</h3><br>
+  {%endif%}
+  {% if vivod.riskdix.critical >= 20 or vivod.riskheart.Critical >= 20 or vivod.obssom.Critical >= 20 or vivod.riskdor.Yes >= 20 %}
+   <h3> Обнаружены средне-высокие риски. Рассмотрите возможность нивелирования.</h3>
+  {%endif%}
+  <h3>ВНИМАНИЕ! Расчет ведется с помощью экспертного метода анализа. Все риски носят ИСКЛЮЧИТЕЛЬНО консультационный харрактер! Решение принимается эвакуирующей бригадой!</h3>
+</center>
 {% endblock %}

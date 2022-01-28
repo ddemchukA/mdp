@@ -306,6 +306,44 @@ def new_pac(request):
     args['form']=form
     return render(request,'newpac.html',args)
 
+def checkdatainbef(a):
+    tp=''
+    mk=0
+    for i in range(1,100):
+        if i == 68:
+            b=a.POST.get(str(i)+':'+'4')
+            if re.match(r'\d{2,3}\/\d{2,3}',b) is None:
+                tp=tp+'Неверное значение давления справа, '
+                mk=mk+1
+        if i == 69:
+            b=a.POST.get(str(i)+':'+'4')
+            if re.match(r'\d{2,3}\/\d{2,3}',b) is None:
+                tp=tp+'Неверное значение давления слева,'
+                mk=mk+1
+        if i == 31:
+            b=a.POST.get(str(i)+':'+'2')
+            if float(b)<0 or float(b)>15:
+                tp=tp+'Неверное значение комы Глазго,'
+                mk=mk+1
+        if i == 58:
+            b=a.POST.get(str(i)+':'+'2')
+            if float(b)<0 or float(b)>100:
+                tp=tp+'Неверное значение сатурации,'
+                mk=mk+1
+        if i == 67:
+            b=a.POST.get(str(i)+':'+'2')
+            if float(b)<0 or float(b)>300:
+                tp=tp+'Неверное значение пульса,'
+                mk=mk+1
+        if i == 75:
+            b=a.POST.get(str(i)+':'+'2')
+            if float(b)<0 or float(b)>100:
+                tp=tp+'Неверное значение диуреза,'
+                mk=mk+1
+    if mk == 0:
+        tp='OK'
+    return tp
+
 @login_required
 def new_bef(request,case_id):
     ev=case.objects.filter(id=case_id)
@@ -313,6 +351,9 @@ def new_bef(request,case_id):
         return HttpResponse('<h1 align=\"center\">Ошибка по процессу: врач не имеет право на данное действие или состояние эвакуации = error</h1>')
     a=''
     if request.method=='POST':
+        b=checkdatainbef(request)
+        if b != 'OK':
+            return HttpResponse('<h1 align=\"center\">'+b+'</h1>')
         ev.update(vputi=0)
         for i in range(1,100):
             if request.POST.get(str(i)+':'+'1') is not None:
@@ -322,12 +363,13 @@ def new_bef(request,case_id):
                 model.case_id=case_id
                 model.save()
             if request.POST.get(str(i)+':'+'2') is not None:
-                model=before()
-                model.atrib_id=i
-                model.valtype=2
-                model.val_float=float(request.POST.get(str(i)+':'+'2'))
-                model.case_id=case_id
-                model.save()
+                if len(str(request.POST.get(str(i)+':'+'2')))>0:
+                    model=before()
+                    model.atrib_id=i
+                    model.valtype=2
+                    model.val_float=float(request.POST.get(str(i)+':'+'2'))
+                    model.case_id=case_id
+                    model.save()
             if request.POST.get(str(i)+':'+'3') is not None and str(request.POST.get(str(i)+':'+'3')):
                 model=before()
                 model.atrib_id=i
