@@ -1,0 +1,31 @@
+{% block content %}
+<center> <h2>{{nazv}} c {{startdate}} по {{enddate}}</h2>
+  {% if tip == 1 %}
+   <table border="1">
+     <tr><td>ID</td>
+     <td>Пациент</td>
+     <td>Дата начала эвакуации</td><td>Врач</td><td>Средний медперсонал</td><td>Эвакуация из</td>
+     <td>Диагноз эвакуирующего врача</td>
+     <td>Доставлен в</td>
+     <td>Время</td>
+     <td>Эвакуация шла (часы)</td>
+     </tr>
+     {% for i in dan %}
+      <tr>
+       <td>{{i.pk}}</td>
+       <td>{{i.id_pac}}</td>
+       <td>{{i.vzyat}}</td>
+       <td>{{i.id_vrach.last_name}}</td><td>{{i.id_srmp}}</td>
+       <td>{{i.fromlpu}}</td>
+       <td>{{i.dscons}}</td>
+       <td>{{i.kuda}}</td>
+       <td>{{i.kogda}}</td>
+       <td>{{i.hours}}</td>
+      </tr>
+     {% endfor %}
+   </table>
+  {% endif %}
+  {% load static %}
+  <br><a class ="print-doc" href="javascript:(print());"> <img src="{% static "print.png" %}" width="30" height="30" alt="Распечатать"></a></a>
+</center>
+{% endblock %}

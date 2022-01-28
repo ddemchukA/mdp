@@ -60,7 +60,7 @@ class podg:
             if pv in range(0,7):
                 self.param['glazg'][0]=1
             if pv in range(7,10):
-                y=-1*0.5(pv-7)+1
+                y=-1*0.5*(pv-7)+1
                 y1=0.5*(pv-9)+1
                 self.param['glazg'][0]=y
                 self.param['glazg'][1]=y1

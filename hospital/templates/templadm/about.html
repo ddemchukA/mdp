@@ -151,6 +151,9 @@ function openVklad(evt, bname) {
     {% if a.valtype == 3 %}
     -{{a.atrib}} : {{a.val_text}}<br>
     {% endif %}
+    {% if a.valtype == 4 %}
+    -{{a.atrib}} : {{a.val_text}}<br>
+    {% endif %}
    {% endfor %}
   {% endif %}
 </div>

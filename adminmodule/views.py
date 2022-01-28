@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import datetime
+from datetime import date
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.postgres.search import SearchVector
 from django.contrib.auth.decorators import login_required
@@ -300,7 +301,7 @@ def evado(request):
         if j.vputi>=1:
             delta=datetime.now().replace(tzinfo=None)-j.vzyat.replace(tzinfo=None)
             dur=delta.total_seconds()
-            hours = divmod(dur, 3600)[0]
+            hours=round(dur/3600,1)
             j.htime=hours
         else:
             j.htime='Выезд не начат'
@@ -327,7 +328,51 @@ def about(request,idev):
     arg['poi']=poi
     return render(request, 'templadm/about.html',arg)
 
-
+@login_required
+def statotch(request,idotch):
+    if not  request.user.user_profile.is_superman:
+        return HttpResponse('Доступ только для АДМИНИСТРАТОРОВ!')
+    if request.method=='POST':
+        if idotch == 1 or idotch ==3:
+            st=str(request.POST.get('startdate'))+' 00:00:00'
+            ed=str(request.POST.get('enddate'))+' 23:59:59'
+            dan=case.objects.filter(active=0).filter(vzyat__gte=st,vzyat__lte=ed).order_by('id')
+            for j in dan:
+                akm=dostavlen.objects.filter(case_id=j.pk).get(whatis=1)
+                j.kuda=akm.lpu.name
+                j.kogda=akm.timedeist
+                delta=j.kogda.replace(tzinfo=None)-j.vzyat.replace(tzinfo=None)
+                dur=delta.total_seconds()
+                hours=round(dur/3600,1)
+                j.hours=hours
+            ar={}
+            ar['startdate']=st
+            ar['enddate']=ed
+            ar['dan']=dan
+            ar['tip']=1
+            ar['nazv']='Отчет о работе медперсонала за период'
+            if idotch==1:
+                return render(request, 'templadm/otchet_ready.html',ar)
+            if idotch==3:
+                return render(request, 'templadm/alldateevac.html',ar)
+        if idotch == 2:
+            ar={}
+            ar['tip']=2
+            ar['nazv']='Отчет по врачу'
+            return render(request, 'templadm/otchet_ready.html',ar)
+    else:
+        arg={}
+        arg['today']=str(datetime.now().date())
+        if idotch == 1:
+            arg['nazv']='Отчет о работе медперсонала за период'
+            arg['tip']=1
+        if idotch == 2:
+            arg['nazv']='Отчет по врачу'
+            arg['tip']=1
+        if idotch == 3:
+            arg['nazv']='Список эвакуаций. Выберите даты'
+            arg['tip']=3
+        return render(request, 'templadm/otchet.html',arg)
 
 @login_required
 def editflp(request,idlpu):

@@ -1,0 +1,21 @@
+{% extends "templadm/wrapper_h.html" %}
+{% block content %}
+<center> <h1>{{nazv}}</h1>
+{%if tip == 1 %}
+<form class="form1" action="" method="post">
+  {% csrf_token %}
+  Начало периода: <input type="date" name="startdate" value="{{today}}" class="form-control" required="" id="id_startdate">
+  - Конец периода: <input type="date" name="enddate" value="{{today}}" class="form-control" required="" id="id_enddate"><br>
+  <br><button type="submit" name="button">Сформировать</button>
+</form>
+{% endif %}
+{%if tip == 3 %}
+<form class="form1" action="" method="post">
+  {% csrf_token %}
+  Начало периода: <input type="date" name="startdate" value="{{today}}" class="form-control" required="" id="id_startdate">
+  - Конец периода: <input type="date" name="enddate" value="{{today}}" class="form-control" required="" id="id_enddate"><br>
+  <br><button type="submit" name="button">Сформировать</button>
+</form>
+{% endif %}
+</center>
+{% endblock %}

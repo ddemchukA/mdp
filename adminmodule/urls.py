@@ -22,4 +22,5 @@ urlpatterns = [
     path('chpass/<int:idus>/', views.chpass, name='chpass'),
     path('chdata/<int:idus>/', views.chdata, name='chdata'),
     path('stat/', views.stat, name='stat'),
+    path('statotch/<int:idotch>/', views.statotch, name='statotch'),
 ]
