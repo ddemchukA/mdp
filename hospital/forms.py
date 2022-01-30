@@ -5,8 +5,8 @@ from django.forms import ModelForm
 class NP(ModelForm):
      class Meta:
          model = patient
-         fields = ['f', 'i', 'o', 'dr','pol','doc','polis','snils','telrod']
-         labels = {'f':'Фамилия','i':'Имя','o':'Отчество','dr':'Дата рождения','pol':'Пол','doc':'Документ','polis':'Полис','snils':'СНИЛС','telrod':'Контакт родственника'}
+         fields = ['f', 'i', 'o', 'pol','dr','doc','polis','snils','telrod']
+         labels = {'f':'Фамилия','i':'Имя','o':'Отчество','pol':'Пол','dr':'Дата рождения','doc':'Документ','polis':'Полис','snils':'СНИЛС','telrod':'Контакт родственника'}
 
 class NE(ModelForm):
      class Meta:
