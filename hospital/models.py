@@ -67,14 +67,8 @@ class transport(models.Model):
 
 class fromlpu(models.Model):
     nazv=models.CharField(max_length=150,default="NONE")
-    roadoc=models.IntegerField(default=0)
-    rast=models.IntegerField(default=0)
-    roadrate=models.FloatField(default=0)
     def __str__(self):
         return str(self.nazv)
-    def save(self, *args, **kwargs):
-        self.roadrate=round(self.roadoc/((self.rast/750)+1),1)
-        super(fromlpu, self).save(*args, **kwargs)
 
 class srmp(models.Model):
     fio=models.CharField(max_length=150,default="NONE")
@@ -101,7 +95,12 @@ class case(models.Model):
     fromlpu=models.ForeignKey(fromlpu, on_delete=models.PROTECT)
     active=models.IntegerField(default=1)
     vputi=models.IntegerField(default=-1)
-
+    roadoc=models.IntegerField(default=0)
+    rast=models.IntegerField(default=0)
+    roadrate=models.FloatField(default=0)
+    def save(self, *args, **kwargs):
+        self.roadrate=round(self.roadoc/((self.rast/750)+1),1)
+        super(case, self).save(*args, **kwargs)
 
 
 class atributes(models.Model):

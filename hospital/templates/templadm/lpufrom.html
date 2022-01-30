@@ -3,9 +3,9 @@
 <center> <h1>Список ЛПУ эвакуации</h1></center>
 <center>
  <table border="1">
-   <tr><td>Название ЛПУ</td><td>КОДУ</td><td>Действия</td></tr>
+   <tr><td>Название ЛПУ</td><td>Действия</td></tr>
   {% for i in froml %}
-   <tr><td>{{i.nazv}}</td><td><center>{{i.roadrate}}</center></td><td><a href="/adminmodule/editflp/{{i.pk}}">Редактировать</a></td></tr>
+   <tr><td>{{i.nazv}}</td><td><a href="/adminmodule/editflp/{{i.pk}}">Редактировать</a></td></tr>
   {% endfor %}
  </table><br>
  <a href="/adminmodule/newlpfrom/">Новое ЛПУ</a>

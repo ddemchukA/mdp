@@ -230,7 +230,7 @@ class podg:
             self.unc_str=self.unc_str+'Нет информации о типе транспорта, '
 #Список комплексная оценка дороги
     def __get_road(self,cs):
-        pv=cs.fromlpu.roadrate
+        pv=cs.roadrate
         if pv is not None:
             self.param['roadrate']=[0,0,0]
             if pv >=0 and pv < 1.8:

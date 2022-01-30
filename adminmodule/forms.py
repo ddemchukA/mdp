@@ -11,8 +11,8 @@ class NP(ModelForm):
 class newlp(ModelForm):
      class Meta:
          model = fromlpu
-         fields = ['nazv','roadoc','rast']
-         labels = {'nazv':'Название','roadoc':'Оценка покрытия дороги','rast':'Расстояние'}
+         fields = ['nazv']
+         labels = {'nazv':'Название'}
 
 class newsrmpf(ModelForm):
      class Meta:

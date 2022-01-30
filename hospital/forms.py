@@ -11,8 +11,8 @@ class NP(ModelForm):
 class NE(ModelForm):
      class Meta:
          model = case
-         fields = ['fromlpu','dateti','dslpu', 'dscons', 'id_trans','id_srmp']
-         labels = {'fromlpu':'Взят из ЛПУ','dateti':'Дата/время прибытия к больному','dslpu':'Диагноз ЛПУ','dscons':'Диагноз консультанта','id_trans':'Транспорт','id_srmp':'Средний медперсонал'}
+         fields = ['fromlpu','dateti','dslpu', 'dscons', 'id_trans','id_srmp','rast','roadoc']
+         labels = {'fromlpu':'Взят из ЛПУ','dateti':'Дата/время прибытия к больному','dslpu':'Диагноз ЛПУ','dscons':'Диагноз консультанта','id_trans':'Транспорт','id_srmp':'Средний медперсонал','rast':'Расстояние','roadoc':'Оценка дороги'}
 
 class Dostav(ModelForm):
     class Meta:
