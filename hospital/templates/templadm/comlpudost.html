@@ -1,0 +1,16 @@
+{% extends "templadm/wrapper_h.html" %}
+{% block content %}
+<center> <h1>Выбрать ЛПУ для эвакуации №{{idcase}}</h1>
+  <form class="form1" action="" method="post">
+    {% csrf_token %}
+    <select name="tst" id="tst">
+      <option disabled selected>Выберите ЛПУ</option>
+      {% for a in froml %}
+       <option value="{{a.pk}}">{{a.name}}</option>
+      {% endfor %}
+   </select><br><br>
+    <button type="submit" name="button">Сохранить</button>
+  </form><br>
+</center>
+
+{% endblock %}

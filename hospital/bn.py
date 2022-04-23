@@ -29,14 +29,14 @@ class podg:
     unc_str=''
     def __init__(self,nom):
         self.nom=nom
-        self.param['press']=[0.33,0.33,0.33]
-        self.param['glazg']=[0.25,0.25,0.25,0.25]
-        self.param['pulse']=[0.33,0.33,0.33]
-        self.param['satur']=[0.33,0.33,0.33]
-        self.param['transp']=[0.5,0.5]
-        self.param['diurez']=[0.33,0.33,0.33]
-        self.param['dix']=[0.33,0.33,0.33]
-        self.param['roadrate']=[0.33,0.33,0.33]
+        self.param['press']=[0.3,0.4,0.3]
+        self.param['glazg']=[0.1,0.1,0.4,0.4]
+        self.param['pulse']=[0.2,0.4,0.4]
+        self.param['satur']=[0.1,0.4,0.5]
+        self.param['transp']=[0.99,0.01]
+        self.param['diurez']=[0.5,0.4,0.1]
+        self.param['dix']=[0.3,0.4,0.3]
+        self.param['roadrate']=[0.1,0.5,0.4]
         self.kolis=0
         self.unc_str=''
 
@@ -147,9 +147,9 @@ class podg:
                 self.param['press'][1]=y1
             if pk2 in range(106,130):
                 self.param['press']=[0,1,0]
-            if pk2 in range(130,141):
-                y=-1*0.1*(pk2-130)+1
-                y1=0.1*(pk2-130)
+            if pk2 in range(131,141):
+                y=-1*0.1*(pk2-131)+1
+                y1=0.1*(pk2-131)
                 self.param['press'][1]=y
                 self.param['press'][2]=y1
             if pk2 >= 141:

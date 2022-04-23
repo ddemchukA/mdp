@@ -98,6 +98,7 @@ class case(models.Model):
     roadoc=models.IntegerField(default=0)
     rast=models.IntegerField(default=0)
     roadrate=models.FloatField(default=0)
+    lpudost=models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         self.roadrate=round(self.roadoc/((self.rast/750)+1),1)
         super(case, self).save(*args, **kwargs)

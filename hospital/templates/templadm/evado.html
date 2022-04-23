@@ -6,7 +6,7 @@
   <table border="1">
   <tr><td>Состояние</td><td>Номер эвакуации</td><td>Начало эвакуации</td>
     <td>ФИО пациента</td><td>Врач</td><td>Эвакуация из</td>
-  <td>Время эвакуации (часы)</td>
+  <td>Время эвакуации (часы)<td>ЛПУ доставки</td>
   </tr>
    {% for i in evd %}
    {% if i.htime >= 3 and i.htime <= 5 %}
@@ -22,7 +22,18 @@
       <td>{{i.id_pac}}</td>
       <td><p title="{{i.telef}}">{{i.vrf}}</p></td>
       <td>{{i.fromlpu}}</td>
-      <td><center>{{i.htime}}</center></td></tr>
+      <td><center>{{i.htime}}</center></td>
+      <td><center>
+        {% if i.vputi < 3 %}
+        {% if i.lpdost == 'no'%}
+        <a href="/adminmodule/comdostlpu/{{i.pk}}">Назначить ЛПУ доставки</a></center>
+        {% else %}
+        {{i.lpdost}} - <a href="/adminmodule/delcomlpu/{{i.pk}}">Удалить</a>
+       {% endif %}
+       {% else %}
+       {{i.lpdost}}
+       {% endif %}
+      </td></tr>
 
    {% endfor %}
   </table><br>

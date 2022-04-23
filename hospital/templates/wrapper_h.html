@@ -20,7 +20,7 @@
  {% endif %}
 
  {% if request.user.user_profile.is_commit_doctor or request.user.user_profile.is_superman %}
- <button  onclick="document.location='/findeva'">Поиск эвакуации</button><br>
+ <button  onclick="document.location='/findeva'">Эвакуации в ЛПУ</button><br>
  {% endif %}
 
  {% if request.user.user_profile.is_superman %}

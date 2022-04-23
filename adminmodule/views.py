@@ -52,6 +52,34 @@ def LoginView(request):
     return render(request, 'login.html', {'form': form})
 
 
+@login_required
+def delcomlpu(request,idcase):
+    kl=case.objects.filter(pk=idcase)
+    if kl[0].vputi >=3:
+        return HttpResponse('Изменения невозможны в текущем состоянии эвакуации!')
+    if not  request.user.user_profile.is_superman:
+        return HttpResponse('Доступ только для АДМИНИСТРАТОРОВ!')
+    kl.update(lpudost=0)
+    return redirect('/adminmodule/evado')
+
+@login_required
+def comdostlpu(request,idcase):
+    kl=case.objects.filter(pk=idcase)
+    if kl[0].vputi >=3:
+        return HttpResponse('Изменения невозможны в текущем состоянии эвакуации!')
+    if not  request.user.user_profile.is_superman:
+        return HttpResponse('Доступ только для АДМИНИСТРАТОРОВ!')
+    if request.method=='POST':
+        a=request.POST.get('tst')
+        kl.update(lpudost=int(a))
+        return redirect('/adminmodule/evado')
+    else:
+        arg={}
+        arg['idcase']=idcase
+        froml=lpubd.objects.all().order_by('id')
+        arg['froml']=froml
+        return render(request, 'templadm/comlpudost.html',arg)
+
 def blcus(request,usid,deist):
     user=User.objects.get(pk=usid)
     if not  request.user.user_profile.is_superman:
@@ -305,6 +333,11 @@ def evado(request):
             j.htime=hours
         else:
             j.htime='Выезд не начат'
+        if j.lpudost !=0:
+            an=lpubd.objects.get(pk=j.lpudost)
+            j.lpdost=an.name
+        else:
+            j.lpdost='no'
     arg['evd']=evd
     arg['count']=evd.count()
     return render(request, 'templadm/evado.html',arg)

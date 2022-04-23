@@ -7,12 +7,7 @@
   <h3>Идентификация рисков:</h3><br>
   <table border=1>
     <tr><td>Тип риска</td><td>Вероятность</td><td>Критичность</td>
-    <tr {% if vivod.riskdix.critical >= 50 %}
-      bgcolor="red"
-    {% endif %}
-    {% if vivod.riskdix.critical >= 20 and vivod.riskdix.critical < 50 %}
-     bgcolor="yellow"
-    {%endif%}><td>Дыхательные риски</td><td>{{vivod.riskdix.critical}}%</td>
+    <tr><td>Дыхательные риски</td><td>{{vivod.riskdix.critical}}%</td>
     <td>
       {% if vivod.riskdix.critical >= 50 %}
         Высокий
@@ -25,12 +20,7 @@
       {% endif %}
     </td></tr>
 
-    <tr {% if vivod.riskheart.Critical >= 50 %}
-      bgcolor="red"
-    {% endif %}
-    {% if vivod.riskheart.Critical >= 20 and vivod.riskheart.Critical < 50 %}
-     bgcolor="yellow"
-    {%endif%}><td>Сердечно-сосудистые риски</td><td>{{vivod.riskheart.Critical}}%</td>
+    <tr><td>Сердечно-сосудистые риски</td><td>{{vivod.riskheart.Critical}}%</td>
     <td>
       {% if vivod.riskheart.Critical >= 50 %}
         Высокий
@@ -43,12 +33,7 @@
       {% endif %}
     </td></tr>
 
-    <tr{% if vivod.obssom.Critical >= 50 %}
-      bgcolor="red"
-    {% endif %}
-    {% if vivod.obssom.Critical >= 20 and vivod.obssom.Critical < 50 %}
-     bgcolor="yellow"
-    {%endif%}><td>Риски общесоматического состояния</td><td>{{vivod.obssom.Critical}}%</td>
+    <tr><td>Риски общесоматического состояния</td><td>{{vivod.obssom.Critical}}%</td>
     <td>
       {% if vivod.obssom.Critical >= 50 %}
         Высокий
@@ -61,12 +46,7 @@
       {% endif %}
     </td></tr>
 
-    <tr{% if vivod.riskdor.Yes >= 50 %}
-      bgcolor="red"
-    {% endif %}
-    {% if vivod.riskdor.Yes >= 20 and vivod.riskdor.Yes < 50 %}
-     bgcolor="yellow"
-    {%endif%}><td>Риски дорожных эксцессов</td><td>{{vivod.riskdor.Yes}}%</td>
+    <tr><td>Риски дорожных эксцессов</td><td>{{vivod.riskdor.Yes}}%</td>
     <td>
       {% if vivod.riskdor.Yes >= 50 %}
         Высокий

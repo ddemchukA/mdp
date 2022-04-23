@@ -113,18 +113,10 @@ def newdost(request,caseid):
 def findeva(request):
     if not request.user.user_profile.is_commit_doctor:
         return HttpResponse('<h1 align=\"center\">Ошибка по процессу: врач не имеет право на данное действие</h1>')
-    form = SearchForm1()
-    query = None
-    results = []
-    if 'query' in request.GET:
-        form = SearchForm1(request.GET)
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            results=case.objects.filter(pk=query)
+    a=int(request.user.user_profile.lpu.pk)
+    r=case.objects.filter(lpudost=a)
     args={}
-    args['query']=query
-    args['form']=form
-    args['results']=results
+    args['results']=r
     return render(request,'nfeva.html',args )
 
 @login_required
@@ -310,36 +302,46 @@ def checkdatainbef(a):
     tp=''
     mk=0
     for i in range(1,100):
+        if i == 7:
+            b=a.POST.get(str(i)+':'+'2')
+            if len(b)!=0:
+                if float(b)<20 or float(b)>43:
+                    tp=tp+'Неверное значение температуры,'
+                    mk=mk+1
         if i == 68:
             b=a.POST.get(str(i)+':'+'4')
-            if re.match(r'\d{2,3}\/\d{2,3}',b) is None:
+            if re.match(r'\d{2,3}\/\d{2,3}',b) is None and len(b)!=0:
                 tp=tp+'Неверное значение давления справа, '
                 mk=mk+1
         if i == 69:
             b=a.POST.get(str(i)+':'+'4')
-            if re.match(r'\d{2,3}\/\d{2,3}',b) is None:
+            if re.match(r'\d{2,3}\/\d{2,3}',b) is None and len(b)!=0:
                 tp=tp+'Неверное значение давления слева,'
                 mk=mk+1
         if i == 31:
             b=a.POST.get(str(i)+':'+'2')
-            if float(b)<0 or float(b)>15:
-                tp=tp+'Неверное значение комы Глазго,'
-                mk=mk+1
+            if len(b)!=0:
+                if float(b)<0 or float(b)>15:
+                    tp=tp+'Неверное значение комы Глазго,'
+                    mk=mk+1
         if i == 58:
             b=a.POST.get(str(i)+':'+'2')
-            if float(b)<0 or float(b)>100:
-                tp=tp+'Неверное значение сатурации,'
-                mk=mk+1
+            if len(b)!=0:
+                if float(b)<0 or float(b)>100:
+                    tp=tp+'Неверное значение сатурации,'
+                    mk=mk+1
         if i == 67:
             b=a.POST.get(str(i)+':'+'2')
-            if float(b)<0 or float(b)>300:
-                tp=tp+'Неверное значение пульса,'
-                mk=mk+1
+            if len(b)!=0:
+                if float(b)<0 or float(b)>300:
+                    tp=tp+'Неверное значение пульса,'
+                    mk=mk+1
         if i == 75:
             b=a.POST.get(str(i)+':'+'2')
-            if float(b)<0 or float(b)>100:
-                tp=tp+'Неверное значение диуреза,'
-                mk=mk+1
+            if len(b)!=0:
+                if float(b)<0 or float(b)>100:
+                    tp=tp+'Неверное значение диуреза,'
+                    mk=mk+1
     if mk == 0:
         tp='OK'
     return tp
@@ -499,6 +501,8 @@ def showeva(request,caseid,flag):
     if not request.user.user_profile.is_commit_doctor:
         return HttpResponse('<h1 align=\"center\">Данный процесс доступен ТОЛЬКО принимающему врачу!</h1>')
     poi=case.objects.filter(id=caseid)
+    if poi[0].lpudost != int(request.user.user_profile.lpu.id):
+        return HttpResponse('<h1 align=\"center\">Просмотр эвакуации запрещен</h1>')
     if poi.count()==1:
         pp=poi[0].vputi
         args={}
